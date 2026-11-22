@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "aesthetics",
+      "code": "SEC-01",
+      "title": "美学、视觉艺术与人文表达",
+      "subtitle": "视觉艺术与线稿控制 · 高审美演示架构 · UI 设计令牌 · 自然汉语语感与去模板腔",
+      "accent": "#eb9ab3"
+    },
+    {
+      "id": "academic",
+      "code": "SEC-02",
+      "title": "学术研究与专业文档",
+      "subtitle": "文献检索与 DOI 核验 · 课程精讲与 LaTeX 写作 · 办公文档工程路由 · 实验分析与科研配图",
+      "accent": "#8fa8ff"
+    },
+    {
+      "id": "industrial",
+      "code": "SEC-03",
+      "title": "代码工程与数字管线",
+      "subtitle": "软件分层架构与开源安全基线 · 本地 MCP 自检 · 现代 Web 规范 · 3D / Live2D 与动效管线",
+      "accent": "#e8742c"
+    },
+    {
+      "id": "strategy",
+      "code": "SEC-04",
+      "title": "流程调度、复核与事务文书",
+      "subtitle": "全流程精修与多视角独立复核 · 多线程认知分流排期 · 合同风控审阅与正式英文联络邮件",
+      "accent": "#eab869"
+    },
+    {
+      "id": "calibration",
+      "code": "CAL-05",
+      "title": "行为纪律与个人偏好校准",
+      "subtitle": "个人偏好与红线记录模板（私有校准层） · DeepSeek Harness 执行纪律与实测门禁",
+      "accent": "#5aa9e6"
+    }
+  ]
+}

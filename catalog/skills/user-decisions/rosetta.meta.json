@@ -1,0 +1,51 @@
+{
+  "id": "user-decisions",
+  "categoryId": "calibration",
+  "title": "个人偏好、决定记录与红线模板",
+  "summary": "产出代码、设计、文档或重要文本前必查：记录用户亲手拍板的取舍理由、表达红线与无感反馈沉淀流程（私有校准层模板）。",
+  "annotation": "【定位】Rosetta 双层架构中的「个人私有校准层」空白模板卡。平时无需手动填表，在日常协作中随口点评成品后，DeepSeek Harness 会静默记入 feedback 流并适时提炼为提案写入本卡。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [
+    "私有校准层",
+    "偏好红线",
+    "无感反馈"
+  ],
+  "flavor": [
+    {
+      "key": "feedback_auto_promote_threshold",
+      "label": "同类反馈自动提炼阈值",
+      "type": "select",
+      "value": "累计 2 条同类反馈或遇到明确红线即发起提案",
+      "options": [
+        "累计 2 条同类反馈或遇到明确红线即发起提案",
+        "累计 3 条同类反馈再发起提案",
+        "仅在明确红线时发起提案"
+      ],
+      "hint": "DeepSeek Harness 后台记录无感反馈后触发 rosetta_propose 的时机"
+    }
+  ],
+  "contentHash": "09fa2523a5246f7c8f6668299c639d3940ff430bfa0fbab8ae4daf4fc652cc3d",
+  "fileHashes": {
+    "SKILL.md": "308d093c1185c6c20462961f8cb52590739c7b316c3fd659668a0a7617b05887"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 1,
+    "hasExecutableScripts": false,
+    "requiresManualApproval": false,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.694Z",
+    "findings": []
+  },
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta"
+}

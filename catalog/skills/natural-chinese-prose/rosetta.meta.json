@@ -1,0 +1,34 @@
+{
+  "id": "natural-chinese-prose",
+  "categoryId": "aesthetics",
+  "title": "自然汉语语感、展示文案节奏与去人机味规范",
+  "summary": "撰写或润色中文演示文案、科普图鉴、故事绘本、网页导语、项目汇报或个人陈述时启用：双向去塑料吹捧腔与百科电报流水账，防标题模具克隆与行尾劈词。",
+  "annotation": "【用途】中文演示文案、项目汇报、科普图鉴与长篇叙述的语感校准卡：双向去除塑料吹捧腔与翻译电报流水账，严防标题克隆与行尾劈词。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [],
+  "flavor": [],
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "contentHash": "0e53b39b603921fb744a8c6b6aced5929c8b8c1505f6fbf04ed804f5af8a05c1",
+  "fileHashes": {
+    "SKILL.md": "1642ab610a04c404850481dd59a8362843291f9209483ff3ffe031e6c79d77be"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 1,
+    "hasExecutableScripts": false,
+    "requiresManualApproval": false,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T16:29:17.019Z",
+    "findings": []
+  }
+}

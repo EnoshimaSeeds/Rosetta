@@ -1,0 +1,61 @@
+{
+  "id": "literature-vault-search",
+  "categoryId": "academic",
+  "title": "学术文献检索与引文真实性核验",
+  "summary": "检索学术文献、核查论文引用真伪或撰写文献综述时启用：自带 OpenAlex / Crossref API 实时核验脚本，严禁凭记忆编造文献或 DOI。",
+  "annotation": "【用途】学术文献检索与引文真实性核验规范，附零依赖 scripts/verify_or_search_lit.cjs（直连 Crossref 与 OpenAlex 官方接口）。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [
+    "文献检索",
+    "DOI核验",
+    "防幻觉",
+    "OpenAlex",
+    "Crossref"
+  ],
+  "flavor": [
+    {
+      "key": "citation_style",
+      "label": "默认参考文献格式",
+      "type": "select",
+      "value": "APA 第7版 (APA 7th)",
+      "options": [
+        "Harvard",
+        "IEEE 数字标号",
+        "APA 第7版 (APA 7th)",
+        "Vancouver"
+      ]
+    },
+    {
+      "key": "require_doi_verification",
+      "label": "强制联网核验每条 DOI/PMID",
+      "type": "boolean",
+      "value": true,
+      "hint": "未通过权威数据库核验的文献严禁写入正式文稿"
+    }
+  ],
+  "contentHash": "d01a1a63cd9351b6ad30b1ef0609497641212468fb8efa3430bb59781e4a31e9",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "fileHashes": {
+    "SKILL.md": "67aac28c6572cb6e7c32a793edf18ba30d843b514e12cd2173d620dd1620c8d2",
+    "scripts/verify_or_search_lit.cjs": "28bd48deab4582934a84179de77facb27f2f04577142bccba8aadb02dc9fff78"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 2,
+    "hasExecutableScripts": true,
+    "requiresManualApproval": true,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.494Z",
+    "findings": []
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "id": "sci-figure-craft",
+  "categoryId": "academic",
+  "title": "科研与论文配图",
+  "summary": "用 Python 或 MATLAB 画要进论文、报告或答辩的数据图时启用：按最终印刷尺寸作图，使用随附样式文件与色盲安全配色，坐标轴带单位，误差棒含义和 n 写明。",
+  "annotation": "【用途】科研与论文出版级配图规范，附 Matplotlib 样式表 scripts/rosetta-sci.mplstyle 与 MATLAB 导出脚本 scripts/save_pub_fig.m。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [
+    "科研配图",
+    "Matplotlib",
+    "MATLAB",
+    "Okabe-Ito"
+  ],
+  "flavor": [
+    {
+      "key": "figure_width",
+      "label": "默认图宽规格",
+      "type": "select",
+      "value": "单栏 8.8 cm",
+      "options": [
+        "单栏 8.8 cm",
+        "双栏 18 cm"
+      ]
+    }
+  ],
+  "contentHash": "786a0ebcb26846473450a505a9976b1a7eec8dfc21f2f1a297262440d8028799",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "fileHashes": {
+    "SKILL.md": "f91d90aec371146e22b7b230156e03cfc272c1e7af008347f0ebe4519bc795d0",
+    "scripts/rosetta-sci.mplstyle": "e215b55c130dc148a665347d5ea02d03ba561c6bcbbb94b2ed81136345b2b8cf",
+    "scripts/save_pub_fig.m": "2fd4215b766326aabfcadd9172ee98ed1d9053361537ef45f25058140618796a"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 3,
+    "hasExecutableScripts": false,
+    "requiresManualApproval": false,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.653Z",
+    "findings": []
+  }
+}

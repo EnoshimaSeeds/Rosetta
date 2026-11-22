@@ -1,0 +1,54 @@
+{
+  "id": "dsh-execution-discipline",
+  "categoryId": "calibration",
+  "title": "DeepSeek Harness 通用执行纪律与实测门禁",
+  "summary": "在 DeepSeek Harness 中执行工程开发、配置改动或长程任务时启用：先确认需求边界、多步任务落盘状态清单、改动前核验语义，并经真实入口端到端验证。",
+  "annotation": "【定位】DeepSeek Harness 通用执行纪律卡：需求分岔先确认、多步长任务落盘状态清单、改动前锁定边界与语义核验、真实宿主入口端到端验证，并严守 Rosetta 审批流程。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [
+    "DeepSeek Harness",
+    "执行纪律",
+    "实测门禁",
+    "防漂移"
+  ],
+  "flavor": [
+    {
+      "key": "long_task_threshold",
+      "label": "状态清单落盘阈值",
+      "type": "text",
+      "value": "超过 3 个主要阶段的任务自动落盘 task_plan 与验收清单",
+      "hint": "防止长程多步骤任务在中途遗漏子项或目标漂移"
+    },
+    {
+      "key": "require_real_entry_check",
+      "label": "交付入口真实运行门禁",
+      "type": "boolean",
+      "value": true,
+      "hint": "凡交付可运行脚本、CLI 或配置产物，均须通过真实命令验证退出码"
+    }
+  ],
+  "contentHash": "dc5ff6fd8e1072ed200d1fc8bd1e158e029e98ebf12c05fbc357efcb686288d5",
+  "fileHashes": {
+    "SKILL.md": "026023ad67f9449849d8b3ddc903ee8640e4b8e080d850fdf347259970dfc0b2"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 1,
+    "hasExecutableScripts": false,
+    "requiresManualApproval": false,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T16:09:11.933Z",
+    "findings": []
+  },
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta"
+}

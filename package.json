@@ -1,0 +1,24 @@
+{
+  "name": "rosetta-dsh",
+  "version": "1.0.0",
+  "description": "Rosetta for DeepSeek Harness — Zero-dependency local Skill, Preference & MCP Studio for DeepSeek Harness (dsh), featuring a 3-Tier Astrolabe UI, Full-Bundle SHA-256 Tamper-Guard, Cross-Process Lock, Hash-Chained Audit Log, and Atomic Snapshots.",
+  "author": "HikawaRin (Siyuan He)",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "src/desktop/main.cjs",
+  "bin": {
+    "rosetta": "./bin/rosetta.cjs"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node src/desktop/launcher.cjs",
+    "cli": "node bin/rosetta.cjs",
+    "dsh:config": "node bin/rosetta.cjs dsh-config",
+    "dsh:sync": "node bin/rosetta.cjs sync --actor cli-local",
+    "lint": "node bin/rosetta.cjs lint",
+    "mcp": "node src/mcp/server.cjs",
+    "test": "node --test test/*.test.cjs"
+  }
+}

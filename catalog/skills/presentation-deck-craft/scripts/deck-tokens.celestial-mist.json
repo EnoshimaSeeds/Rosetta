@@ -1,0 +1,55 @@
+{
+  "name": "celestial-mist-watercolor",
+  "version": "0.5.1",
+  "idea": "Luminous cold-press cotton paper stage inspired by mineral pigment granulation (lapis lazuli & raw gold astrolabe hairlines). Gentle, airy, poetic.",
+  "slide": {
+    "ratio": "16:9",
+    "widthIn": 13.333,
+    "heightIn": 7.5,
+    "marginLeftRightIn": 1.15,
+    "marginTopBottomIn": 0.7,
+    "gridColumns": 12,
+    "gutterIn": 0.24
+  },
+  "linework": {
+    "hairlineDividerPt": 0.5,
+    "astrolabeArcPt": 0.5,
+    "doubleFrameOuterPt": 1.5,
+    "doubleFrameInnerPt": 0.5,
+    "cornerCropMarkIn": 0.08
+  },
+  "color": {
+    "background": "#F6F4EF",
+    "surface": "#ECE8DF",
+    "ink": "#17253B",
+    "muted": "#516075",
+    "rule": "#D5CFC3",
+    "voicePrimary": "#1E5688",
+    "voiceSecondary": "#8F621E"
+  },
+  "contrastOnBackground": {
+    "ink": 14,
+    "muted": 5.82,
+    "voicePrimary": 6.97,
+    "voiceSecondary": 4.86,
+    "note": "Exact W3C WCAG 2.1/2.2 contrast ratios against #F6F4EF cold-press cotton paper background (all >= 4.5)."
+  },
+  "font": {
+    "latinDisplay": "Georgia",
+    "latinBody": "Calibri",
+    "cjkDisplay": "SimSun",
+    "cjkBody": "Microsoft YaHei",
+    "cjkPreferredOptional": [
+      "Source Han Serif SC",
+      "Source Han Sans SC"
+    ]
+  },
+  "sizePt": {
+    "title": 32,
+    "body": 19,
+    "bodyMin": 18,
+    "caption": 13,
+    "pullQuote": 26,
+    "monoCoord": 10.5
+  }
+}

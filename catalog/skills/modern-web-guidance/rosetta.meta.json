@@ -1,0 +1,52 @@
+{
+  "id": "modern-web-guidance",
+  "categoryId": "industrial",
+  "title": "现代 Web 平台开发规范（非官方中文精要）",
+  "summary": "编写网页、Electron 渲染层或现代 CSS/TS 界面代码时启用：参考 GoogleChrome/modern-web-guidance（Apache-2.0）与 Web Platform Baseline，优先使用现代原生 HTML/CSS/API。",
+  "annotation": "【用途】基于 GoogleChrome/modern-web-guidance（Apache-2.0）整理的现代 Web 平台开发中文精要，附 references/baseline-patterns-and-pitfalls.md。",
+  "origin": "github-verified",
+  "sourceUrl": "https://github.com/GoogleChrome/modern-web-guidance",
+  "version": "1.0.0",
+  "tags": [
+    "ModernWeb",
+    "WebBaseline",
+    "TypeScript",
+    "现代CSS",
+    "Apache-2.0参考"
+  ],
+  "flavor": [
+    {
+      "key": "language_default",
+      "label": "脚本语言默认标准",
+      "type": "select",
+      "value": "现代 TypeScript (strict) 或 ES2024+ 标准模块",
+      "options": [
+        "现代 TypeScript (strict) 或 ES2024+ 标准模块",
+        "零构建原生 ESM（适用于轻量网页与 Electron 渲染层）"
+      ]
+    }
+  ],
+  "contentHash": "3304dd46fef4c3bfc66e459d860f7e219bfb6b1f1cf290e35d41a685d485de42",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "fileHashes": {
+    "SKILL.md": "0decce3b5db72ad6265877d7bd92fb37353a6af84683f79092a9a02c5e207f64",
+    "references/baseline-patterns-and-pitfalls.md": "14c9adb6a9699b71966211cebf2a068d430961c3b4567cb0752f85e13b631906"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 2,
+    "hasExecutableScripts": false,
+    "requiresManualApproval": false,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.547Z",
+    "findings": []
+  }
+}

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rosetta — Skill &amp; MCP Studio for DeepSeek Harness</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <!-- ROSETTA-BRIDGE -->
+</head>
+<body data-tier="categories">
+  <!-- Persistent Precision HUD -->
+  <header class="hud">
+    <div class="hud-left">
+      <button class="hud-brand" id="btnHomeBrand" title="返回第一层：板块主轮盘">
+        <span class="hud-diamond"></span>
+        <span>ROSETTA · DSH</span>
+      </button>
+      <nav class="hud-crumbs" id="hudCrumbs" aria-label="层级导航"></nav>
+    </div>
+    <div class="hud-right">
+      <span class="hud-stat mono" id="hudStat">加载中…</span>
+      <button class="hud-btn" id="btnMcpModal" title="查看 MCP 服务与本机 DeepSeek Harness 接入配置">
+        🔌 DSH 接入与 MCP
+      </button>
+      <button class="hud-btn" id="btnProposals" title="查看 DeepSeek Harness 通过 MCP 提交的待审变更草稿与 Diff">
+        <span>待审变更</span>
+        <span class="hud-badge" id="proposalBadge" hidden>0</span>
+      </button>
+      <button class="hud-btn" id="btnAuditModal" title="查看不可篡改操作审计日志或签发单次写入授权码">
+        📜 审计与授权
+      </button>
+      <button class="hud-btn" id="btnScanModal" title="对外部 SKILL.md 或脚本进行静态启发式与能力检查">
+        🛡️ 启发式检查
+      </button>
+      <button class="hud-btn" id="btnSnapshotsModal" title="查看历史原子快照并一键无损回滚">
+        ⏱ 快照版本
+      </button>
+      <button class="hud-btn primary" id="btnSyncAll" title="将当前挂载技能立即同步至 DeepSeek Harness 技能目录 (~/.dsh/skills)">
+        ⚡ 同步至 DSH
+      </button>
+      <div class="win-controls" id="winControls" aria-label="窗口控制">
+        <button class="win-btn" id="btnWinFull" title="无边框全屏 (F11)" aria-label="无边框全屏">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M1.5 4.2V1.5h2.7M7.8 1.5h2.7v2.7M10.5 7.8v2.7H7.8M4.2 10.5H1.5V7.8"/>
+          </svg>
+        </button>
+        <button class="win-btn" id="btnWinMin" title="最小化" aria-label="最小化">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.25">
+            <path d="M2 6.5h8"/>
+          </svg>
+        </button>
+        <button class="win-btn" id="btnWinMax" title="最大化" aria-label="最大化">
+          <svg class="ico-max" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2">
+            <rect x="2" y="2" width="8" height="8" rx="1"/>
+          </svg>
+          <svg class="ico-restore" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.15">
+            <rect x="2" y="3.5" width="6.5" height="6.5" rx="0.8"/>
+            <path d="M3.8 3.5V2.2a.7.7 0 0 1 .7-.7h5.3a.7.7 0 0 1 .7.7v5.3a.7.7 0 0 1-.7.7H8.5"/>
+          </svg>
+        </button>
+        <button class="win-btn close" id="btnWinClose" title="关闭" aria-label="关闭">
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.25">
+            <path d="M2.5 2.5l7 7M9.5 2.5l-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- TIER 1 & TIER 2: Astrolabe / Film-Reel Wheel Stage -->
+  <main class="wheel-view" id="wheelView">
+    <canvas class="wheel-canvas wheel-canvas-back" id="wheelCanvas"></canvas>
+    <div class="wheel-hub" id="wheelHub">
+      <div class="hub-ring" aria-hidden="true">
+        <svg class="hub-emblem" viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="27" stroke="url(#hubGold)" stroke-width="0.85" stroke-dasharray="1.8 3.2" opacity="0.68"/>
+          <circle cx="32" cy="32" r="21" stroke="rgba(255,216,170,0.24)" stroke-width="0.75"/>
+          <path d="M35.5 20.5a11.8 11.8 0 1 0 9.4 18.8 9.2 9.2 0 1 1-9.4-18.8Z" fill="url(#hubMoon)" opacity="0.9"/>
+          <path d="M36 24.5 L37.3 29.2 L42 30.5 L37.3 31.8 L36 36.5 L34.7 31.8 L30 30.5 L34.7 29.2 Z" fill="#FFE6BD"/>
+          <circle cx="36" cy="30.5" r="1.9" fill="#FFF8E8"/>
+          <defs>
+            <linearGradient id="hubGold" x1="8" y1="8" x2="56" y2="56">
+              <stop offset="0%" stop-color="#FFE2B8"/>
+              <stop offset="55%" stop-color="#E8742C"/>
+              <stop offset="100%" stop-color="#5AA9E6"/>
+            </linearGradient>
+            <linearGradient id="hubMoon" x1="20" y1="20" x2="42" y2="42">
+              <stop offset="0%" stop-color="#F2F6FF"/>
+              <stop offset="100%" stop-color="#B9C8DF"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <b id="hubTitle">ROSETTA</b>
+      <div class="hub-sub-wrap">
+        <i class="hub-rule" aria-hidden="true"></i>
+        <span id="hubSub">Ⅰ · 选择分类板块轮盘</span>
+        <i class="hub-rule" aria-hidden="true"></i>
+      </div>
+    </div>
+    <canvas class="wheel-canvas wheel-canvas-front" id="wheelCanvasFront"></canvas>
+    <div class="wheel-frames" id="wheelFrames"></div>
+
+    <!-- Right-Side Maglev Frosted Thick-Slab Projection Inspector -->
+    <div class="projection-dock" id="projectionDock">
+      <div class="projection-maglev-glow" aria-hidden="true"></div>
+      <div class="projection-slab" aria-hidden="true"></div>
+      <aside class="projection" id="projectionPanel"></aside>
+    </div>
+
+    <!-- Bottom Mini Reel Rack -->
+    <footer class="reel-rack" id="reelRack" hidden></footer>
+  </main>
+
+  <!-- TIER 3: Detail & Tuning Studio -->
+  <section class="studio-view" id="studioView" hidden>
+    <div class="studio-grid">
+      <div class="studio-col studio-left" id="studioLeft"></div>
+      <div class="studio-col studio-right">
+        <div class="studio-tabs" role="tablist">
+          <button class="stab on" data-tab="markdown" id="tabBtnMarkdown">📜 技能规范 (SKILL.md)</button>
+          <button class="stab" data-tab="scripts" id="tabBtnScripts">⚙️ 辅助脚本 (scripts/)</button>
+          <button class="stab" data-tab="security" id="tabBtnSecurity">🛡️ 主机安全报告</button>
+        </div>
+        <div class="studio-pane" id="paneMarkdown">
+          <div class="editor-banner">
+            <span>💡 提示：左侧「参数预设卡」的选项会在保存时自动写入 <code>SKILL.md</code> 顶部声明块，同步至 DeepSeek Harness 后即刻生效。</span>
+          </div>
+          <textarea class="code-editor" id="editorMarkdown" spellcheck="false" placeholder="在此编写技能的核心执行工序、边界约束与验收标准…"></textarea>
+        </div>
+        <div class="studio-pane" id="paneScripts" hidden>
+          <div class="script-bar" id="scriptBar"></div>
+          <textarea class="code-editor mono-editor" id="editorScript" spellcheck="false" placeholder="// 可执行辅助脚本（如校验工具、文献查询脚本），保存前会自动通过主机安全扫描…"></textarea>
+        </div>
+        <div class="studio-pane" id="paneSecurity" hidden>
+          <div class="sec-panel" id="studioSecurityReport"></div>
+        </div>
+        <footer class="studio-foot">
+          <div class="studio-foot-left">
+            <button class="sbtn danger" id="btnDeleteSkill">🗑️ 移除技能</button>
+            <button class="sbtn ghost" id="btnOpenFolder">📂 打开本地目录</button>
+          </div>
+          <div class="studio-foot-right">
+            <button class="sbtn ghost" id="btnCancelStudio">返回卡面转轮 (Esc)</button>
+            <button class="sbtn" id="btnSaveOnly">仅保存入库（自动留快照）</button>
+            <button class="sbtn primary" id="btnSaveAndSync">💾 保存并同步至 DSH (Ctrl+S)</button>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal 1: Add/Edit Category Sector -->
+  <dialog class="modal" id="dlgCategory">
+    <form method="dialog" class="modal-box" id="formCategory">
+      <h3>开辟新板块轮盘（开放式分类扩建）</h3>
+      <p class="dim">Rosetta 不设封闭上限，可随时为新课题、新工具链或新工作流建立独立分类轮盘。</p>
+      <label class="field">
+        <span>板块英文标识 (ID, 小写字母与连字符)</span>
+        <input type="text" id="catId" required pattern="[a-z0-9][a-z0-9_-]{1,40}" placeholder="例如: data-engineering" />
+      </label>
+      <label class="field">
+        <span>轮盘编号 (Code)</span>
+        <input type="text" id="catCode" maxlength="12" placeholder="例如: SEC-06" />
+      </label>
+      <label class="field">
+        <span>板块名称</span>
+        <input type="text" id="catTitle" required maxlength="50" placeholder="例如: 数据工程与自动化" />
+      </label>
+      <label class="field">
+        <span>板块简介</span>
+        <input type="text" id="catSubtitle" maxlength="140" placeholder="一句话说明该板块收录的技能范畴…" />
+      </label>
+      <label class="field">
+        <span>轮盘代表色</span>
+        <input type="color" id="catAccent" value="#e8742c" />
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="sbtn ghost" data-close="dlgCategory">取消</button>
+        <button type="submit" class="sbtn primary">创建板块轮盘</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Modal 2: External Quarantine Security Scanner -->
+  <dialog class="modal wide" id="dlgScanner">
+    <div class="modal-box">
+      <h3>🛡️ 外部技能入库安全扫描台（防提示词注入 &amp; 防凭据窃取）</h3>
+      <p class="dim">从外部仓库引入 <code>SKILL.md</code> 或脚本前，可在此逐行检测隐藏越狱指令、零宽字符、环境变量读取与异常外发连接。</p>
+      <textarea class="code-editor" id="scannerInput" rows="10" placeholder="在此粘贴外部 SKILL.md 或脚本源码进行主机级安全扫描…"></textarea>
+      <div class="modal-actions">
+        <button type="button" class="sbtn ghost" id="btnFillAttackSample">填入注入测试样本（演示拦截）</button>
+        <div class="grow"></div>
+        <button type="button" class="sbtn ghost" data-close="dlgScanner">关闭</button>
+        <button type="button" class="sbtn primary" id="btnRunModalScan">立即执行逐行扫描</button>
+      </div>
+      <div id="scannerModalResult" class="sec-panel"></div>
+    </div>
+  </dialog>
+
+  <!-- Modal 3: Snapshot Version Library -->
+  <dialog class="modal wide" id="dlgSnapshots">
+    <div class="modal-box">
+      <h3>⏱ 原子快照版本库（SHA-256 完整性校验 · 支持无损回滚）</h3>
+      <p class="dim">每次增删、参数变更或挂载开关调整均自动生成快照，回滚前亦自动建立保护备份。</p>
+      <div class="snap-list" id="snapshotList"></div>
+      <div class="modal-actions">
+        <button type="button" class="sbtn ghost" data-close="dlgSnapshots">关闭</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal 4: Staging Proposals Queue -->
+  <dialog class="modal wide" id="dlgProposals">
+    <div class="modal-box">
+      <h3>📬 待审变更队列（Staging Queue）</h3>
+      <p class="dim">DeepSeek Harness 通过 <code>rosetta_propose</code> 提交的新增或修订草稿将在此隔离暂存，经你审阅 Diff 并批准后才写入正式库并同步。</p>
+      <div class="snap-list" id="proposalList"></div>
+      <div class="modal-actions">
+        <button type="button" class="sbtn ghost" data-close="dlgProposals">关闭</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal 5: DSH Setup & MCP Registry -->
+  <dialog class="modal wide" id="dlgMcp">
+    <div class="modal-box">
+      <h3>🔌 DeepSeek Harness 接入配置 &amp; MCP 注册表</h3>
+      <p class="dim">查看已登记的 MCP 工具服务，以及按当前机器真实路径生成的 <code>cordis.patch.yml</code> 配置块（也可将根目录的 <code>FOR-DEEPSEEK-HARNESS.md</code> 直接交给大肥鱼自动配置）。</p>
+      <div id="dshConfigCard" class="panel-card" style="padding:12px 14px;gap:8px;"></div>
+      <div class="snap-list" id="mcpList"></div>
+      <div class="modal-actions">
+        <button type="button" class="sbtn ghost" data-close="dlgMcp">关闭</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal 6: Confirm Skill Removal -->
+  <dialog class="modal" id="dlgConfirmDelete">
+    <div class="modal-box">
+      <h3>🗑️ 确认移除技能包</h3>
+      <p class="dim" id="confirmDeleteText">移除前系统会自动留存完整 SHA-256 快照，随时可在「快照版本」一键无损恢复。</p>
+      <div class="modal-actions">
+        <button type="button" class="sbtn ghost" data-close="dlgConfirmDelete">取消</button>
+        <button type="button" class="sbtn danger" id="btnConfirmDeleteYes">确认移除并留存快照</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal 7: Audit Log & One-Time Authorization Grant -->
+  <dialog class="modal wide" id="dlgAudit">
+    <div class="modal-box">
+      <h3>📜 操作审计日志 &amp; 单次写入授权门禁</h3>
+      <p class="dim">所有本地与 MCP 操作均记入 SHA-256 哈希链审计日志。若需授权 DeepSeek Harness 通过 <code>rosetta_apply_authorized</code> 直接合入一次无脚本修订，可在下方签发 5 分钟有效的单次授权码。</p>
+      <div class="panel-card" style="padding:11px 14px;flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span class="dim" style="font-size:12.5px;">允许终端：</span>
+          <select id="grantHostSelect" style="background:var(--bg0);border:1px solid var(--line2);border-radius:5px;padding:4px 8px;font-size:12.5px;color:var(--text);">
+            <option value="dsh">DeepSeek Harness (dsh)</option>
+            <option value="*">任意已登记宿主 (*)</option>
+          </select>
+          <button type="button" class="sbtn primary small" id="btnIssueGrant">🔓 签发 5 分钟单次授权码</button>
+        </div>
+        <div id="issuedGrantDisplay" class="mono" style="color:var(--or-hot);user-select:all;"></div>
+      </div>
+      <div id="auditChainStatus" class="mono" style="font-size:12.5px;"></div>
+      <div class="snap-list" id="auditList"></div>
+      <div class="modal-actions">
+        <button type="button" class="sbtn ghost" data-close="dlgAudit">关闭</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal 8: Disk Drift Diff Review -->
+  <dialog class="modal wide" id="dlgDrift">
+    <div class="modal-box">
+      <h3>⚠️ 审阅磁盘漂移 Diff（上次入库基线 → 当前磁盘现状）</h3>
+      <div id="driftSummary" class="dim" style="font-size:12.5px;"></div>
+      <div class="diff-box" id="driftDiffBox"></div>
+      <div class="modal-actions">
+        <button type="button" class="sbtn ghost" data-close="dlgDrift">暂不处理</button>
+        <button type="button" class="sbtn danger" id="btnDriftRestore">⏪ 放弃改动 · 单卡还原至入库基线</button>
+        <button type="button" class="sbtn primary" id="btnDriftAdopt">✅ 审阅无误 · 采纳改动并重新盖章</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="./window-chrome.js"></script>
+  <script src="./wheel-canvas.js"></script>
+  <script src="./studio-panel.js"></script>
+  <script src="./modals-panel.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

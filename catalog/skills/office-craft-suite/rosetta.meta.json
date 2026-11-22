@@ -1,0 +1,72 @@
+{
+  "id": "office-craft-suite",
+  "categoryId": "academic",
+  "title": "专业办公文档精制（Word / Excel / PDF / PPT 工程路由）",
+  "summary": "创建、排版或审计 .docx、.xlsx、.pdf 与 .pptx 交付件时启用：按场景渐进式加载 FAST 建模、BME 实验数据、六套光谱皮肤（含诗意绘本与先锋设定画志）及精细线条铁律。",
+  "annotation": "【用途】Word / Excel / PDF / PPT 渐进式场景路由卡，附 4 份按需加载的工程蓝图（FAST 财务建模、实验数据工作簿、六套文档皮肤、PPTX 工程笔记）。",
+  "origin": "bespoke",
+  "sourceUrl": "https://github.com/anthropics/skills",
+  "version": "1.0.0",
+  "tags": [
+    "Word",
+    "Excel",
+    "PDF",
+    "PPT",
+    "FAST建模",
+    "文档工程"
+  ],
+  "flavor": [
+    {
+      "key": "doc_font_pair",
+      "label": "默认中英文字体搭配",
+      "type": "select",
+      "value": "中文思源宋体→宋体 / 思源黑体→微软雅黑 + 英文 Times / Calibri",
+      "options": [
+        "中文思源宋体→宋体 / 思源黑体→微软雅黑 + 英文 Times / Calibri",
+        "全现代无衬线清冽风 (Calibri + 微软雅黑)",
+        "古典书页/画志衬线风 (Georgia + 宋体)"
+      ]
+    },
+    {
+      "key": "default_doc_scene",
+      "label": "默认 Word/PDF 皮肤策略",
+      "type": "select",
+      "value": "按任务自动判别（小作业极简 student-plain，创意画册按光谱派生）",
+      "options": [
+        "按任务自动判别（小作业极简 student-plain，创意画册按光谱派生）",
+        "学术论文/报告 (academic-manuscript)",
+        "商业咨询备忘录 (consulting-memo)",
+        "诗意绘本与水色故事册 (story-book)",
+        "侘寂册页与先锋设定画志 (editorial-zine)",
+        "合同红线审阅 (contract-redline)"
+      ],
+      "hint": "防止小作业套花哨壳，同时让绘本与设定集摆脱公文框"
+    }
+  ],
+  "contentHash": "8364dfc09bd30808a3ffeb5965b1b7fd429406501f740cd304d8a602081c9f3c",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "fileHashes": {
+    "SKILL.md": "ff72bc34998d3e5501f0347b77d5a86568e06de2191a59e9aef53a167a78556d",
+    "references/excel-bme-lab-data.md": "282e108d1684d58462502e755a8c1223f35602b78687f413de026f44a4174d1c",
+    "references/excel-fast-modeling.md": "628a083d57bd834a6cc3b603bd26f96f9a81793d38621b6f5767143b2b34f2d1",
+    "references/ppt-pipeline-and-pptmaster-notes.md": "6161db0b6c56e27c8a9fc10599e08ba4ea46ac3aa9de3b3abfefdeb3fee2f0f5",
+    "references/word-scene-skins.md": "82c5bc37d59489829bf3a3cadc47ef975959155bab86c37e1b301e4d0803ef0c"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 5,
+    "hasExecutableScripts": false,
+    "requiresManualApproval": false,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.589Z",
+    "findings": []
+  }
+}

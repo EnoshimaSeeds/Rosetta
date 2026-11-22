@@ -1,0 +1,38 @@
+{
+  "id": "mcp-server-checklist",
+  "categoryId": "industrial",
+  "title": "本地 MCP 服务自检清单",
+  "summary": "编写或修改本地 stdio MCP 服务（如 Rosetta 等本地工具服务）时启用：逐项检查协议与传输、身份与权限、输入与文件、输出与外部请求、测试与发布。",
+  "annotation": "【用途】编写或审查本地 stdio MCP 服务时的五维自检清单（协议传输、身份权限、输入与文件安全、输出与外部请求、测试与发布）。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [
+    "MCP协议",
+    "安全自检",
+    "JSON-RPC"
+  ],
+  "flavor": [],
+  "contentHash": "f0d16fa26bc1877e3cc4adf5a30316d1e8be17ef2f310e461d6717a929c2cc77",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 1,
+    "hasExecutableScripts": false,
+    "requiresManualApproval": false,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.531Z",
+    "findings": []
+  },
+  "fileHashes": {
+    "SKILL.md": "d622501f3dd25dc0912c66763067e7b7efddca1dea3e175f074e4dc287d16cbf"
+  }
+}

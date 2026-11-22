@@ -1,0 +1,78 @@
+{
+  "id": "art-style-and-ui-craft",
+  "categoryId": "aesthetics",
+  "title": "全媒介美学罗盘、线稿构成、UI 肌理与服装高定",
+  "summary": "在生图艺术与线稿控制、角色服装剪裁、现代 UI 空间/线条设计（含侘寂与新粗野）及 AI 短片前期策划中启用：双极罗盘现场推导，拒绝死套色板。",
+  "annotation": "【用途】面向插画线稿、角色服装剪裁、UI 空间肌理与短片前期策划的双极美学推导卡，附 4 份按需读取的 references/ 专题蓝图。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [
+    "美学罗盘",
+    "线稿设计",
+    "服装剪裁",
+    "侘寂与新粗野",
+    "UI空间构成",
+    "去人机味"
+  ],
+  "flavor": [
+    {
+      "key": "ui_aesthetic_preset",
+      "label": "默认视觉推导取向",
+      "type": "select",
+      "value": "按母题双极罗盘现场推导（拒绝死套色板）",
+      "options": [
+        "按母题双极罗盘现场推导（拒绝死套色板）",
+        "温柔星辰 · 水色微光向 (Luminous & Celestial)",
+        "清冽先锋 · 破格杂志向 (Refreshing Avant-Garde)",
+        "侘寂留白 · 器物肌理向 (Wabi-Sabi & Tactile)",
+        "精密工业 · 微物化旋钮台向 (Tactile Instrument)"
+      ]
+    },
+    {
+      "key": "illustration_taste",
+      "label": "插画/线稿与服装审美取向",
+      "type": "select",
+      "value": "按题材选定线稿与服装廓形（游丝水彩/清线/厚涂/版画自适配）",
+      "options": [
+        "按题材选定线稿与服装廓形（游丝水彩/清线/厚涂/版画自适配）",
+        "游丝星尘水彩与古典高定垂坠",
+        "莫比斯清线奇幻与高张力原画速写",
+        "先锋解构机能与孔版双鼓套色版画"
+      ]
+    },
+    {
+      "key": "ban_ai_cliches",
+      "label": "启用双向反人机味红线",
+      "type": "boolean",
+      "value": true,
+      "hint": "左防“极其/赋能/不是A而是B”塑料腔，右防翻译腔单字硬缩略与句号流水账"
+    }
+  ],
+  "contentHash": "928809a0d52743a40ab0c9eb1afd3e2ad4c09ac0fb93b4102755a6c0e4b577c4",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "fileHashes": {
+    "SKILL.md": "d6eebd47d783885b26e6017cc8776441eeeb1c0d1bdbd680a4633ba3f7fdc0c5",
+    "references/ai-video-preprod-workflow.md": "de7686e1c583b18da5730e90ef0c5cd0cdd2cb7f28e636366aa0efebe127fe00",
+    "references/art-movements-and-mediums.md": "b8d1b3d3234b8745d27e2f21594dfc899393bd63a336eea78cad9df0eece330b",
+    "references/character-and-3d-bible.md": "b0b01c7d443cc4b87e33c60315e53eb646fb76e669105ad0d49a1be0ef85612e",
+    "references/ui-spatial-and-linework.md": "5fee1a1de228772d94463e265e32e842d14460f18a2a6c62e3ddf11d03d31b4b"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 5,
+    "hasExecutableScripts": false,
+    "requiresManualApproval": false,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.470Z",
+    "findings": []
+  }
+}

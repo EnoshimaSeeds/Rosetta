@@ -1,0 +1,80 @@
+{
+  "id": "presentation-deck-craft",
+  "categoryId": "aesthetics",
+  "title": "高审美演示架构、多光谱令牌与模块化页型",
+  "summary": "制作学术答辩、产品路演、美术设定集、科普图鉴或绘本 PPT/Slides 时启用：内置四套 WCAG 令牌、学术与视觉模块化页型、裁图署名、动效节制与全介质渲染复核。",
+  "annotation": "【用途】学术答辩、产品路演与视觉设定集的演示架构卡，附 2 份页型蓝图与 4 套通过 WCAG AA 实算校验的 scripts/deck-tokens.*.json 令牌。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [
+    "PPT策展",
+    "Keynote路演",
+    "美术设定集",
+    "跨媒介叠印",
+    "学术答辩"
+  ],
+  "flavor": [
+    {
+      "key": "slide_ratio",
+      "label": "画幅比例",
+      "type": "select",
+      "value": "16:9 宽屏标准",
+      "options": [
+        "16:9 宽屏标准",
+        "4:3 经典展映 / 画册比例"
+      ]
+    },
+    {
+      "key": "deck_tone",
+      "label": "默认版式光谱策略",
+      "type": "select",
+      "value": "按演示意图自动匹配光谱（学术/清冽路演/水色星辰/侘寂策展自适配）",
+      "options": [
+        "按演示意图自动匹配光谱（学术/清冽路演/水色星辰/侘寂策展自适配）",
+        "学术清朗风 (Academic Light)",
+        "晨雾水色星辰风 (Celestial Mist Light)",
+        "清冽先锋杂志路演风 (Avant-Garde Editorial)",
+        "丝绒夜曲放映风 (Narrative Dark)"
+      ]
+    },
+    {
+      "key": "max_bullets_per_slide",
+      "label": "单页信息密度上限",
+      "type": "select",
+      "value": "最多 4 条精炼短句或单一主视觉锚点（严禁贴大段原文）",
+      "options": [
+        "最多 4 条精炼短句或单一主视觉锚点（严禁贴大段原文）",
+        "大留白主图/大字主导 + 极细标尺图注"
+      ]
+    }
+  ],
+  "contentHash": "3dbeed9f2ca0fdbdf209e87573a954e5d87a49b19dea9bf9bfe40fb1e922510b",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "fileHashes": {
+    "SKILL.md": "37d3c29959f00df8baa7097f23e1b4a3798e16566dd8dbb4ed9c3980f198aad5",
+    "references/academic-deck-patterns.md": "8477b3d5e647ab5bd48cfce58c32652956f8a982561209d31459ab1222f1e75c",
+    "references/visual-deck-patterns.md": "1b34189bea11b4bb47785970422682a29cf2cc0c436b8496f0a0107e8b0ed3c9",
+    "scripts/deck-tokens.academic.json": "68be8a91c14ca33c8ea13e2bb75fa1c18e4faeb01ee816e24b969a31b917661f",
+    "scripts/deck-tokens.avant-editorial.json": "68b1a03693c04a4ef2f449296ebcae31915f10c3267384a8c0ba15f86a15293d",
+    "scripts/deck-tokens.celestial-mist.json": "3d40a94b5f66fd1ccb489f011d0a77a2e0cd8373a791bada3ffa0dfa367aa502",
+    "scripts/deck-tokens.narrative-dark.json": "b6acae72f0693972553c486c060afe71a48a4a960cdb0f240e3369006d157837"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 7,
+    "hasExecutableScripts": false,
+    "requiresManualApproval": false,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.624Z",
+    "findings": []
+  }
+}

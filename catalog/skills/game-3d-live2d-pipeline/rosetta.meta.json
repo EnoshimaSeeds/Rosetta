@@ -1,0 +1,60 @@
+{
+  "id": "game-3d-live2d-pipeline",
+  "categoryId": "industrial",
+  "title": "Unreal Engine、3D 资产、Live2D 拆层与 UI 动效管线",
+  "summary": "进行 Unreal Engine 开发、AI + Tripo 3D 建模准备与导入审计、2D 立绘拆解 Live2D 图层或 UI 交互动效设计时启用。",
+  "annotation": "【用途】Unreal Engine 5、AI + Tripo 3D 资产入引擎五项质检、2D 立绘 Live2D 拆层与 UI 交互动效的工业管线标准。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [
+    "UnrealEngine",
+    "Tripo3D",
+    "Live2D",
+    "UI动效"
+  ],
+  "flavor": [
+    {
+      "key": "primary_game_engine",
+      "label": "主力游戏引擎规范",
+      "type": "select",
+      "value": "Unreal Engine 5.x (C++ 与 Blueprint 职责分层)",
+      "options": [
+        "Unreal Engine 5.x (C++ 与 Blueprint 职责分层)",
+        "WebGL / Three.js 轻量实时预览"
+      ]
+    },
+    {
+      "key": "tripo_workflow",
+      "label": "3D 角色资产管线",
+      "type": "select",
+      "value": "正交多视图参考图规范 → Tripo 生成 → 拓扑/UV/骨骼审计",
+      "options": [
+        "正交多视图参考图规范 → Tripo 生成 → 拓扑/UV/骨骼审计",
+        "Blender 程序化硬表面建模"
+      ]
+    }
+  ],
+  "contentHash": "cef7037c7fb3dd98a2e7cf14535ec9f968e9f55f034971f0d41cbd98477d2afb",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "fileHashes": {
+    "SKILL.md": "9a826424fba352c841204a873a0fae988a206087f769e080598ab11574fff42e"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 1,
+    "hasExecutableScripts": false,
+    "requiresManualApproval": false,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.480Z",
+    "findings": []
+  }
+}

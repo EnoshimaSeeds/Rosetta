@@ -1,0 +1,65 @@
+{
+  "name": "academic-two-voices",
+  "version": "0.1.0",
+  "idea": "Two accent colours for two voices: evidence (what the paper or data shows) and critique (what the presenter thinks). Everything else stays ink and grey.",
+  "slide": {
+    "ratio": "16:9",
+    "widthIn": 13.333,
+    "heightIn": 7.5,
+    "marginLeftRightIn": 1.07,
+    "marginTopBottomIn": 0.6,
+    "gridColumns": 12,
+    "gutterIn": 0.2
+  },
+  "color": {
+    "background": "#FBFAF7",
+    "ink": "#1B2330",
+    "muted": "#5B6573",
+    "rule": "#D9D6CF",
+    "evidence": "#1F4E8C",
+    "evidenceTint": "#E8EEF6",
+    "critique": "#B4541A",
+    "critiqueTint": "#F7EADF",
+    "dataNeutral": "#9AA1AB"
+  },
+  "contrastOnBackground": {
+    "ink": 15.13,
+    "muted": 5.66,
+    "evidence": 7.96,
+    "critique": 4.76,
+    "note": "WCAG contrast ratios against color.background; rule and dataNeutral are for lines and de-emphasised data, not text."
+  },
+  "font": {
+    "latin": "Arial",
+    "cjk": "Microsoft YaHei",
+    "cjkSerifFallback": "SimSun",
+    "cjkOptionalPreferred": [
+      "Source Han Sans SC",
+      "Source Han Serif SC"
+    ],
+    "mono": "Consolas"
+  },
+  "sizePt": {
+    "title": 30,
+    "body": 20,
+    "bodyMin": 18,
+    "caption": 13,
+    "bigNumber": 72,
+    "footer": 11
+  },
+  "weight": {
+    "title": 700,
+    "body": 400,
+    "emphasis": 700
+  },
+  "line": {
+    "rulePt": 0.75,
+    "dataPt": 2.25,
+    "figureBorderPt": 1.5
+  },
+  "usage": {
+    "evidence": "Only the data series, number or figure border currently being discussed. At most one use per slide.",
+    "critique": "Only the presenter's own judgement: annotations, doubts, limitations, proposed fixes. At most one use per slide.",
+    "tints": "Background of a callout box in the matching voice; text on a tint stays ink."
+  }
+}

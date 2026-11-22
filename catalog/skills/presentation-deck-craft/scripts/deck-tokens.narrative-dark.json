@@ -1,0 +1,48 @@
+{
+  "name": "narrative-dark-two-voices",
+  "version": "0.5.1",
+  "idea": "Warm obsidian stage for literary/illustrated storybooks and atmospheric pitches. Two restrained accents separate two narrative voices or motifs while keeping >4.5:1 WCAG text contrast.",
+  "slide": {
+    "ratio": "16:9",
+    "widthIn": 13.333,
+    "heightIn": 7.5,
+    "marginLeftRightIn": 1.07,
+    "marginTopBottomIn": 0.65,
+    "gridColumns": 12,
+    "gutterIn": 0.22
+  },
+  "color": {
+    "background": "#120E0C",
+    "surface": "#1C1613",
+    "ink": "#EDE5D8",
+    "muted": "#A89888",
+    "rule": "#332820",
+    "voicePrimary": "#E8833A",
+    "voiceSecondary": "#D46A7A"
+  },
+  "contrastOnBackground": {
+    "ink": 15.36,
+    "muted": 6.87,
+    "voicePrimary": 7.07,
+    "voiceSecondary": 5.62,
+    "note": "Exact W3C WCAG 2.1/2.2 contrast ratios against #120E0C background (all >= 4.5)."
+  },
+  "font": {
+    "latinDisplay": "Georgia",
+    "latinBody": "Calibri",
+    "cjkDisplay": "SimSun",
+    "cjkBody": "Microsoft YaHei",
+    "cjkPreferredOptional": [
+      "Source Han Serif SC",
+      "Source Han Sans SC"
+    ]
+  },
+  "sizePt": {
+    "title": 34,
+    "body": 20,
+    "bodyMin": 18,
+    "caption": 13,
+    "pullQuote": 28,
+    "footer": 11
+  }
+}

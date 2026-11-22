@@ -1,0 +1,52 @@
+{
+  "id": "workflow-triage-and-review",
+  "categoryId": "strategy",
+  "title": "全流程调度、多视角独立复核与涉外文书",
+  "summary": "支持全流程精修与多视角独立复核调度，并在多线程任务过载、学术/求职申请、合同审阅与正式英文邮件场景下启用。",
+  "annotation": "【用途】全流程精修与多视角独立复核调度、多线程认知分流排期、合同风控审阅四列表与正式英文联络邮件准则。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [
+    "走一遍流程",
+    "多视角复核",
+    "任务分流",
+    "合同审阅",
+    "英文邮件"
+  ],
+  "flavor": [
+    {
+      "key": "cross_review_mode",
+      "label": "独立复核默认载体",
+      "type": "select",
+      "value": "项目目录落盘标准审查单（透明可控、不暗烧后台额度）",
+      "options": [
+        "项目目录落盘标准审查单（透明可控、不暗烧后台额度）",
+        "当前会话结构化缺陷分级报告"
+      ],
+      "hint": "触发多视角独立复核时的默认输出方式"
+    }
+  ],
+  "contentHash": "f4422723e2fe757ea6952924a1fc7e24062c6da4f4d3176fc870128562ea0a8a",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "fileHashes": {
+    "SKILL.md": "5ce62c38977d47ba2786f94d3cf9e8259895b5119a7a3e06afd0079820079c73"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 1,
+    "hasExecutableScripts": false,
+    "requiresManualApproval": false,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.694Z",
+    "findings": []
+  }
+}

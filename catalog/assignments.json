@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "assignments": {
+    "academic-course-and-paper": {
+      "dsh": true
+    },
+    "art-style-and-ui-craft": {
+      "dsh": true
+    },
+    "dsh-execution-discipline": {
+      "dsh": true
+    },
+    "game-3d-live2d-pipeline": {
+      "dsh": true
+    },
+    "literature-vault-search": {
+      "dsh": true
+    },
+    "materials-char-analysis": {
+      "dsh": true
+    },
+    "mcp-server-checklist": {
+      "dsh": true
+    },
+    "modern-web-guidance": {
+      "dsh": true
+    },
+    "natural-chinese-prose": {
+      "dsh": true
+    },
+    "office-craft-suite": {
+      "dsh": true
+    },
+    "presentation-deck-craft": {
+      "dsh": true
+    },
+    "sci-figure-craft": {
+      "dsh": true
+    },
+    "underwater-arch-guard": {
+      "dsh": true
+    },
+    "user-decisions": {
+      "dsh": true
+    },
+    "workflow-triage-and-review": {
+      "dsh": true
+    }
+  }
+}

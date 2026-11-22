@@ -1,0 +1,55 @@
+{
+  "name": "avant-editorial-kinetic",
+  "version": "0.5.1",
+  "idea": "Refreshing Neo-Swiss & Studio Dumbar inspired editorial stage. Crisp pale concrete ground, razor-sharp hairlines paired with bold structural strokes, electric cobalt & vermilion accents.",
+  "slide": {
+    "ratio": "16:9",
+    "widthIn": 13.333,
+    "heightIn": 7.5,
+    "marginLeftRightIn": 0.95,
+    "marginTopBottomIn": 0.6,
+    "gridColumns": 12,
+    "gutterIn": 0.18
+  },
+  "linework": {
+    "gridHairlinePt": 0.5,
+    "structuralAccentBarPt": 2.5,
+    "overhangBleedIn": 0.15,
+    "hardShadowOffsetPt": 3
+  },
+  "color": {
+    "background": "#F2F3F0",
+    "surface": "#E5E7E2",
+    "ink": "#111315",
+    "muted": "#4E565E",
+    "rule": "#111315",
+    "voicePrimary": "#0538FF",
+    "voiceSecondary": "#C82E16"
+  },
+  "contrastOnBackground": {
+    "ink": 16.72,
+    "muted": 6.69,
+    "voicePrimary": 6.25,
+    "voiceSecondary": 4.89,
+    "note": "Exact W3C WCAG 2.1/2.2 contrast ratios against #F2F3F0 crisp concrete off-white background (all >= 4.5)."
+  },
+  "font": {
+    "latinDisplay": "Arial",
+    "latinBody": "Calibri",
+    "latinMono": "Consolas",
+    "cjkDisplay": "Microsoft YaHei",
+    "cjkBody": "Microsoft YaHei",
+    "cjkPreferredOptional": [
+      "Source Han Sans SC",
+      "Source Han Serif SC"
+    ]
+  },
+  "sizePt": {
+    "heroDisplay": 56,
+    "title": 32,
+    "body": 19,
+    "bodyMin": 18,
+    "caption": 13,
+    "monoIndex": 10.5
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "id": "academic-course-and-paper",
+  "categoryId": "academic",
+  "title": "高校课程精讲、LaTeX 学术写作与科研实验规范",
+  "summary": "讲解大学课程讲义、撰写或润色英文学术论文与 LaTeX 工程、设计实验方案或联动科研绘图时启用。",
+  "annotation": "【用途】高校课程讲义精讲、英式/规范英文学术写作、LaTeX 工程与实验设计四要素规范，附引文完整性检查脚本 scripts/check_tex_citations.cjs。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [
+    "课程精讲",
+    "LaTeX",
+    "学术写作",
+    "实验设计",
+    "科研绘图"
+  ],
+  "flavor": [
+    {
+      "key": "teaching_style",
+      "label": "课件讲解风格",
+      "type": "select",
+      "value": "物理直觉先行 → 公式逐项拆解 → 考题与工程实例印证",
+      "options": [
+        "物理直觉先行 → 公式逐项拆解 → 考题与工程实例印证",
+        "考点精炼速览模式",
+        "苏格拉底式推导提问模式"
+      ]
+    },
+    {
+      "key": "figure_palette",
+      "label": "科研绘图色板规范",
+      "type": "select",
+      "value": "色盲安全学术色板 (Okabe-Ito)",
+      "options": [
+        "色盲安全学术色板 (Okabe-Ito)",
+        "高对比黑白灰印刷色板",
+        "Viridis 连续场分布色板"
+      ]
+    },
+    {
+      "key": "academic_english_tone",
+      "label": "英文论文润色尺度",
+      "type": "select",
+      "value": "规范英式工科学术语体（British English，精准克制、去冗余修饰）",
+      "options": [
+        "规范英式工科学术语体（British English，精准克制、去冗余修饰）",
+        "仅修正语法、冠词与术语一致性，保留原句结构"
+      ]
+    }
+  ],
+  "contentHash": "a9b69451df7d2916aefd6c3697dadce2749acee00405ec9b5f7eadc548a8fd53",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "fileHashes": {
+    "SKILL.md": "041eaac082d31111aa1c2c82f88b58741c18a77c3dc849f5c7a2f36df6ff1d30",
+    "scripts/check_tex_citations.cjs": "182f8732f22089ea8b4ad3fe2fa4170511f6a24ce6f20a72d1315f218878ca00"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 2,
+    "hasExecutableScripts": true,
+    "requiresManualApproval": true,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.670Z",
+    "findings": []
+  }
+}

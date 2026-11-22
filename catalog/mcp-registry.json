@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "servers": [
+    {
+      "id": "rosetta",
+      "title": "Rosetta Armory MCP",
+      "summary": "DeepSeek Harness 技能按需读取、Crossref/OpenAlex 论文核验、安全扫描、无感反馈流、待审提案与快照服务。",
+      "annotation": "【接入方式】通过 DeepSeek Harness 原生插件 @deepseek-ai/dsh-mcp-client（写入 ~/.dsh/profiles/web/cordis.patch.yml 或 ~/.dsh/cordis.patch.yml）以 stdio 挂载，并显式传入 ROSETTA_ACTOR=dsh。\n【工具命名】在 DeepSeek Harness 中以 mcp__rosetta__<toolName> 形式调用。",
+      "origin": "bespoke",
+      "command": "node",
+      "entryRel": "src/mcp/server.cjs",
+      "mounted": {
+        "dsh": true
+      }
+    }
+  ]
+}

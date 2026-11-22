@@ -1,0 +1,51 @@
+{
+  "id": "materials-char-analysis",
+  "categoryId": "academic",
+  "title": "材料表征数据分析与方法学报告",
+  "summary": "处理拉伸/压缩曲线、DSC/TGA、FTIR/XRD、溶胀与降解等材料表征数据并写进报告时启用：数字由脚本算出，每个指标都写明定义、区间、n 和离散度。",
+  "annotation": "【用途】拉伸/压缩力学曲线、DSC/TGA、FTIR/XRD 与溶胀降解数据分析规范，附零依赖 scripts/tensile_metrics.cjs 自动计算模量、屈服与韧性。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [
+    "材料表征",
+    "拉伸曲线",
+    "杨氏模量",
+    "AdvancedMaterial"
+  ],
+  "flavor": [
+    {
+      "key": "dispersion_metric",
+      "label": "默认离散度口径",
+      "type": "select",
+      "value": "SD (标准差)",
+      "options": [
+        "SD (标准差)",
+        "SEM (标准误)"
+      ]
+    }
+  ],
+  "contentHash": "890144b38a2fc0f30ac915f40ed1398977b2a9c101516beabaf638760b1ab2fb",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "fileHashes": {
+    "SKILL.md": "dc7dbf8007201d00ed487dda544a2bbcbab43dea0723a95aa0818702116d2174",
+    "scripts/tensile_metrics.cjs": "95112d9f856f0f62d188093fcab60dd389c419115865427f949101396928167e"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 2,
+    "hasExecutableScripts": true,
+    "requiresManualApproval": true,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.522Z",
+    "findings": []
+  }
+}

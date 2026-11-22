@@ -1,0 +1,17 @@
+# DeepSeek Harness — Cordis Patch 示例配置
+# 建议路径：~/.dsh/profiles/web/cordis.patch.yml（或 ~/.dsh/cordis.patch.yml）
+# 提示：请运行 `node bin/rosetta.cjs dsh-config` 自动生成包含你本机真实绝对路径的配置块。
+# 注意：不要保留空的 YAML 数组 `[]`，请将下方条目合入现有的 `- insert:` 列表或作为完整补丁写入。
+
+- insert:
+    - id: mcp-rosetta
+      name: '@deepseek-ai/dsh-mcp-client'
+      config:
+        serverName: rosetta
+        transport: stdio
+        command: 'node'
+        args:
+          - '<ABSOLUTE_PATH_TO_ROSETTA_DSH>/src/mcp/server.cjs'
+        env:
+          ROSETTA_ACTOR: 'dsh'
+          ROSETTA_ROOT: '<ABSOLUTE_PATH_TO_ROSETTA_DSH>'

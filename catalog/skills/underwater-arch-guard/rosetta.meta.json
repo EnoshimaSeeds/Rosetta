@@ -1,0 +1,65 @@
+{
+  "id": "underwater-arch-guard",
+  "categoryId": "industrial",
+  "title": "软件分层架构与开源安全基线",
+  "summary": "开发多文件软件、桌面应用、持久化服务或准备开源发布时启用（百行内一次性脚本免除繁琐拆包）：执行模块化分层、安全隔离与仓库合规体检。",
+  "annotation": "【用途】多文件应用、桌面软件与开源项目的四层架构约束与安全体检卡，附零依赖合规扫描脚本 scripts/audit_repo_readiness.cjs。",
+  "origin": "bespoke",
+  "sourceUrl": "",
+  "version": "1.0.0",
+  "tags": [
+    "分层架构",
+    "安全隔离",
+    "开源规范",
+    "代码审计",
+    "Electron安全"
+  ],
+  "flavor": [
+    {
+      "key": "open_source_ready",
+      "label": "默认按可开源卫生标准构建",
+      "type": "boolean",
+      "value": true,
+      "hint": "严禁在源码、文档或测试中硬编码个人路径、凭据或未声明许可的资产"
+    },
+    {
+      "key": "test_requirement",
+      "label": "最低验证门禁",
+      "type": "select",
+      "value": "真实入口端到端运行 + 核心边界与异常单元测试通过",
+      "options": [
+        "真实入口端到端运行 + 核心边界与异常单元测试通过",
+        "轻量脚本快速冒烟实测"
+      ]
+    },
+    {
+      "key": "attach_health_card",
+      "label": "阶段交付附带架构与验证摘要",
+      "type": "boolean",
+      "value": true
+    }
+  ],
+  "contentHash": "aa35376465e9eae012f74ca1d38404a7d679087dd8050a2fd3bf63d9c2428c05",
+  "updatedAt": "2026-11-22T00:00:00.000Z",
+  "updatedBy": "Rosetta",
+  "fileHashes": {
+    "SKILL.md": "009fa159a30575d1034ad560bec341ac33a96d918b586d833cc849d6e842a50c",
+    "scripts/audit_repo_readiness.cjs": "612d292e97e1f807391e424c03be5b7a6e08e46663c99b17d75413899af019b2"
+  },
+  "security": {
+    "scannerKind": "static-heuristic-advisory",
+    "passed": true,
+    "verdict": "CLEAN",
+    "score": 100,
+    "scannedFiles": 2,
+    "hasExecutableScripts": true,
+    "requiresManualApproval": true,
+    "counts": {
+      "critical": 0,
+      "high": 0,
+      "warn": 0
+    },
+    "scannedAt": "2026-11-22T15:43:49.681Z",
+    "findings": []
+  }
+}
