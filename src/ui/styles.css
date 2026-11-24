@@ -929,6 +929,40 @@ html.is-fullscreen .win-btn .ico-restore { display: block; }
 }
 .diff-add { color: #7ce09e; }
 .diff-del { color: #ff8070; }
+.file-diff-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: rgba(16, 12, 9, 0.72);
+  border: 1px solid var(--line);
+  font: 11.5px/1.4 var(--mono);
+}
+.fchip {
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--line2);
+}
+.fchip.add { color: #7ce09e; border-color: rgba(124,224,158,0.45); background: rgba(124,224,158,0.1); }
+.fchip.mod { color: #f0b45e; border-color: rgba(240,180,94,0.45); background: rgba(240,180,94,0.1); }
+.fchip.del { color: #ff6a58; border-color: rgba(255,106,88,0.75); background: rgba(255,106,88,0.16); font-weight: 600; }
+.snap-skill-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+.snap-skill-sel {
+  background: var(--bg0);
+  border: 1px solid var(--line2);
+  border-radius: 4px;
+  padding: 3px 7px;
+  color: var(--text);
+  font: 11.5px var(--mono);
+  max-width: 240px;
+}
 
 /* Widescreen / 2K / Fullscreen visual proportion refinement */
 @media (min-width: 1700px) {

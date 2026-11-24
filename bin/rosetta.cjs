@@ -20,6 +20,7 @@ const rawArgs = process.argv.slice(2);
 let cliActor = process.env.ROSETTA_ACTOR || 'cli-local';
 let onBehalfOf = undefined;
 let targetDir = undefined;
+let targetSkillId = undefined;
 let outputJson = false;
 const positional = [];
 
@@ -30,6 +31,8 @@ for (let i = 0; i < rawArgs.length; i++) {
     onBehalfOf = rawArgs[++i];
   } else if (rawArgs[i] === '--target' && rawArgs[i + 1]) {
     targetDir = rawArgs[++i];
+  } else if (rawArgs[i] === '--skill' && rawArgs[i + 1]) {
+    targetSkillId = rawArgs[++i];
   } else if (rawArgs[i] === '--json') {
     outputJson = true;
   } else {
@@ -179,8 +182,23 @@ try {
       break;
     }
     case 'rollback': {
-      if (!arg1) throw new Error('Usage: rosetta rollback <snapshot-id> [--actor <name>] [--on-behalf-of <name>]');
+      if (!arg1) throw new Error('Usage: rosetta rollback <snapshot-id> [--skill <skill-id>] [--actor <name>] [--on-behalf-of <name>]');
       const actorName = arg2 || cliActor;
+      if (targetSkillId) {
+        const res = catalog.snapshots.rollbackSkill(arg1, targetSkillId, actorName);
+        catalog.baselines.recordCleanBaseline(targetSkillId);
+        catalog.audit.log({
+          actor: actorName,
+          ...(onBehalfOf ? { onBehalfOf } : {}),
+          channel: 'cli',
+          action: 'snapshot.rollback_skill',
+          targetId: targetSkillId,
+          approval: 'cli-command',
+          summary: `CLI 单卡回滚 ${targetSkillId} 至快照 ${arg1}`
+        });
+        console.log(JSON.stringify(res, null, 2));
+        break;
+      }
       const res = catalog.snapshots.rollback(arg1, actorName);
       catalog.baselines.seedCleanBaselines({ forceRefresh: true });
       catalog.audit.log({
@@ -208,8 +226,8 @@ try {
         '  node bin/rosetta.cjs lint                           运行技能编录质检与清洁度门禁',
         '  node bin/rosetta.cjs audit                          校验 SHA-256 操作审计日志哈希链连续性',
         '  node bin/rosetta.cjs vault <list|verify|read>       管理本地交付件索引与哈希新鲜度校验',
-        '  node bin/rosetta.cjs snapshots                      查看历史原子快照',
-        '  node bin/rosetta.cjs rollback <snap-id>             无损回滚至指定快照'
+        '  node bin/rosetta.cjs snapshots                               查看历史原子快照',
+        '  node bin/rosetta.cjs rollback <snap-id> [--skill <skill-id>] 无损整库回滚，或指定 --skill 按单卡回滚'
       ].join('\n'));
   }
 } catch (err) {

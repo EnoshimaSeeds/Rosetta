@@ -166,6 +166,18 @@ class RosettaDispatcher {
           return { ok: true, data: { rollback: res, syncReport, dashboard: this.catalog.getDashboardState() } };
         }
 
+        case 'rollbackSkillSnapshot': {
+          const res = this.catalog.snapshots.rollbackSkill(payload.snapshotId, payload.skillId, 'User');
+          this.catalog.baselines.recordCleanBaseline(payload.skillId);
+          this.catalog.audit.log(Object.assign({}, DESKTOP_ORIGIN, {
+            action: 'snapshot.rollback_skill',
+            targetId: payload.skillId,
+            summary: `单卡回滚 ${payload.skillId} 至快照 ${payload.snapshotId}（其余技能与开关保持不变）`
+          }));
+          const syncReport = this.syncEngine.syncAll(Object.assign({}, DESKTOP_ORIGIN, { channel: 'desktop-rollback-skill' }));
+          return { ok: true, data: { rollback: res, syncReport, dashboard: this.catalog.getDashboardState() } };
+        }
+
         case 'pinSnapshot': {
           const res = this.catalog.snapshots.setPinned(payload.snapshotId, Boolean(payload.pinned));
           this.catalog.audit.log(Object.assign({}, DESKTOP_ORIGIN, {

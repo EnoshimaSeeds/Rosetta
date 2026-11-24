@@ -1,8 +1,8 @@
-# Rosetta 系统宪章（Open-Source Edition for DeepSeek Harness）
+# Rosetta 系统宪章（Public Edition）
 
-> **版本**：v1.0.0（All Rights Reserved）  
+> **版本**：v1.0.1（All Rights Reserved）  
 > **作者**：HikawaRin (Siyuan He)  
-> **适用范围**：Rosetta for DeepSeek Harness 本地技能与偏好仓管系统
+> **适用范围**：Rosetta 本地技能、偏好与 MCP 仓管系统（当前公版首发 DeepSeek Harness 适配器；多客户端适配器规划于 v1.1）
 
 ---
 
@@ -32,7 +32,7 @@ Rosetta 的核心使命，是在**确保 DeepSeek Harness（`dsh`）原有能力
 
 1. **当下优先，事后回修**  
    当某条历史规则与用户当下的明确指令冲突时，一律以用户当下的话为准（若涉及安全或长期可维护性等硬风险，先简短提示利弊，仍由用户拍板）；事后再通过提案把卡片改准。
-2. **提案隔离与桌面审阅**  
-   AI 代理通过 MCP 提交的新增或修订草稿统一进入待审变更队列（`rosetta_propose`），经用户在 Rosetta 桌面端审阅逐行 Diff 后批准生效；全仓配置变更记入 SHA-256 哈希链审计日志，并自动生成原子快照支持无损回滚。
+2. **提案隔离、默认增量合并与桌面审阅**  
+   AI 代理通过 MCP 提交的新增或修订草稿统一进入待审变更队列（`rosetta_propose`），`references/` 与 `scripts/` 默认采用**增量合并**（未提及的既有子文件一律保留，删除必须通过 `removeReferences` / `removeScripts` 显式点名并在桌面端标红显示与强转 Diff 审阅）；全仓配置变更记入 SHA-256 哈希链审计日志，并自动生成原子快照支持**整库或按 `skillId` 单卡无损回滚**。
 3. **全包完整性校验**  
    每张技能卡及其 `references/`、`scripts/` 均计算全包 SHA-256 哈希；磁盘发生未审阅改动时自动冻结同步并保留上一版干净副本，杜绝静默投毒与意外漂移。

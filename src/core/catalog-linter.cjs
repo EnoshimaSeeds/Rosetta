@@ -118,6 +118,28 @@ function checkTextHygiene(findings, skillId, relFile, text, options = {}) {
   }
 }
 
+function findBrokenSubfileRefs(markdown, skillDirOrExtraMap) {
+  const seen = new Set();
+  const broken = [];
+  const text = String(markdown || '');
+  const re = /(?<![a-zA-Z0-9_-])(?:\.\/)?(scripts|references)\/([a-zA-Z0-9._-]+\.[a-zA-Z0-9]+)/g;
+  for (const m of text.matchAll(re)) {
+    const rel = `${m[1]}/${m[2]}`;
+    if (seen.has(rel)) continue;
+    seen.add(rel);
+    let exists = false;
+    if (typeof skillDirOrExtraMap === 'string') {
+      exists = fs.existsSync(path.join(skillDirOrExtraMap, m[1], m[2]));
+    } else if (skillDirOrExtraMap instanceof Set) {
+      exists = skillDirOrExtraMap.has(rel);
+    } else if (skillDirOrExtraMap && typeof skillDirOrExtraMap === 'object') {
+      exists = Object.prototype.hasOwnProperty.call(skillDirOrExtraMap, rel);
+    }
+    if (!exists) broken.push(rel);
+  }
+  return broken.sort();
+}
+
 function lintSkillDir(skillDir, skillId) {
   const findings = [];
   const metaPath = path.join(skillDir, 'rosetta.meta.json');
@@ -212,19 +234,14 @@ function lintSkillDir(skillDir, skillId) {
     }
   }
 
-  for (const m of md.matchAll(/(?<![a-zA-Z0-9_/-])(scripts|references)\/([a-zA-Z0-9._-]+\.[a-zA-Z0-9]+)/g)) {
-    const subKind = m[1];
-    const subName = m[2];
-    const expectedPath = path.join(skillDir, subKind, subName);
-    if (!fs.existsSync(expectedPath)) {
-      findings.push({ level: 'ERROR', code: 'ERR_BROKEN_SUBFILE_REF', skillId, file: 'SKILL.md', msg: `SKILL.md 引用了 ${subKind}/${subName}，但磁盘目录中不存在该文件。` });
-    }
+  for (const missingRel of findBrokenSubfileRefs(md, skillDir)) {
+    findings.push({ level: 'ERROR', code: 'ERR_BROKEN_SUBFILE_REF', skillId, file: 'SKILL.md', msg: `SKILL.md 引用了 ${missingRel}，但磁盘目录中不存在该文件。` });
   }
 
   const combinedDocs = allDocTexts.join('\n');
   if (meta.sourceUrl) {
     if (/Imbad0202\/academic-research-skills/i.test(meta.sourceUrl)) {
-      findings.push({ level: 'ERROR', code: 'ERR_LICENSE_CONFLICT', skillId, file: 'rosetta.meta.json', msg: '上游非商业协议仓库不应作为 MIT 仓库自研技能卡的 sourceUrl。' });
+      findings.push({ level: 'ERROR', code: 'ERR_LICENSE_CONFLICT', skillId, file: 'rosetta.meta.json', msg: '上游非商业协议仓库不应作为本项目自研技能卡的 sourceUrl。' });
     }
     if (!/(Apache-2\.0|MIT|BSD|GPL|CC\s*BY|非官方中文|参考|来源|出处)/i.test(combinedDocs)) {
       findings.push({ level: 'ERROR', code: 'ERR_MISSING_ATTRIBUTION', skillId, file: 'SKILL.md', msg: `已登记 sourceUrl (${meta.sourceUrl})，但正文/参考文件中缺少上游许可与整理性质声明。` });
@@ -245,7 +262,7 @@ function lintCatalog(rosettaRoot) {
   if (!fs.existsSync(skillsDir)) {
     return { ok: false, skillsChecked: 0, errorCount: 1, warningCount: 0, findings: [{ level: 'ERROR', code: 'ERR_NO_SKILLS_DIR', skillId: '*', file: 'catalog/skills', msg: '未找到 catalog/skills 目录。' }] };
   }
-  const ids = fs.readdirSync(skillsDir, { withFileTypes: true }).filter((d) => d.isDirectory()).map((d) => d.name).sort();
+  const ids = fs.readdirSync(skillsDir, { withFileTypes: true }).filter((d) => d.isDirectory() && !d.name.startsWith('.')).map((d) => d.name).sort();
   const findings = [];
   const exemptedSkills = [];
   for (const id of ids) {
@@ -276,6 +293,7 @@ function lintCatalog(rosettaRoot) {
 module.exports = {
   lintCatalog,
   lintSkillDir,
+  findBrokenSubfileRefs,
   computeContrastRatio,
   EXEMPTABLE_LINT_CODES
 };

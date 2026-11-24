@@ -1,6 +1,6 @@
 {
   "name": "rosetta-dsh",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Rosetta for DeepSeek Harness — Zero-dependency local Skill, Preference & MCP Studio for DeepSeek Harness (dsh), featuring a 3-Tier Astrolabe UI, Full-Bundle SHA-256 Tamper-Guard, Cross-Process Lock, Hash-Chained Audit Log, and Atomic Snapshots.",
   "author": "HikawaRin (Siyuan He)",
   "license": "UNLICENSED",

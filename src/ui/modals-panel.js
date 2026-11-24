@@ -82,21 +82,52 @@ window.RosettaModals = (function () {
       });
     }
 
+    function renderFileChangesSummaryHtml(fileChanges, brokenRefs) {
+      const fc = fileChanges || { added: [], modified: [], removed: [] };
+      const added = Array.isArray(fc.added) ? fc.added : [];
+      const modified = Array.isArray(fc.modified) ? fc.modified : [];
+      const removed = Array.isArray(fc.removed) ? fc.removed : [];
+      const broken = Array.isArray(brokenRefs) ? brokenRefs : [];
+      const chips = [
+        ...removed.map((f) => `<span class="fchip del">- 删除 ${esc(f)}</span>`),
+        ...added.map((f) => `<span class="fchip add">+ 新增 ${esc(f)}</span>`),
+        ...modified.map((f) => `<span class="fchip mod">~ 修改 ${esc(f)}</span>`)
+      ];
+      const brokenHtml = broken.length > 0
+        ? `<div class="file-diff-bar" style="border-color:rgba(255,106,88,0.65);color:#ff8070;">⚠️ 引用断链（SKILL.md 指向不存在文件）：${broken.map((f) => `<code>${esc(f)}</code>`).join('、')}</div>`
+        : '';
+      const chipsHtml = chips.length > 0
+        ? `<div class="file-diff-bar"><span class="dim">文件级变更：</span>${chips.join('')}</div>`
+        : '';
+      return chipsHtml + brokenHtml;
+    }
+
     function renderSnapshotsModalList() {
       const st = getState();
       const box = document.getElementById('snapshotList');
       const snaps = st.dashboard.snapshots || [];
-      box.innerHTML = snaps.length === 0 ? '<span class="dim">暂无历史快照</span>' : snaps.map((sn) => `
-        <div class="snap-row">
-          <div>
-            <div><strong>${sn.pinned ? '📌 ' : ''}${esc(sn.reason)}</strong></div>
-            <div class="mono dim">${esc(sn.id)} · ${esc(sn.actor)} · ${esc(new Date(sn.createdAt).toLocaleString('zh-CN'))} (${sn.fileCount} 文件)</div>
+      box.innerHTML = snaps.length === 0 ? '<span class="dim">暂无历史快照</span>' : snaps.map((sn) => {
+        const skillIds = Array.isArray(sn.skillIds) ? sn.skillIds : [];
+        return `
+        <div class="snap-row" style="flex-direction:column;align-items:stretch;gap:6px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <div>
+              <div><strong>${sn.pinned ? '📌 ' : ''}${esc(sn.reason)}</strong></div>
+              <div class="mono dim">${esc(sn.id)} · ${esc(sn.actor)} · ${esc(new Date(sn.createdAt).toLocaleString('zh-CN'))} (${sn.fileCount} 文件)</div>
+            </div>
+            <div style="display:flex;gap:8px;flex-shrink:0;">
+              <button type="button" class="sbtn ghost small" data-pin-snap="${esc(sn.id)}" data-pinned="${sn.pinned ? '1' : '0'}">${sn.pinned ? '取消钉住' : '📌 钉住保护'}</button>
+              <button type="button" class="sbtn small" data-rollback="${esc(sn.id)}">⏪ 整库回滚</button>
+            </div>
           </div>
-          <div style="display:flex;gap:8px;flex-shrink:0;">
-            <button type="button" class="sbtn ghost small" data-pin-snap="${esc(sn.id)}" data-pinned="${sn.pinned ? '1' : '0'}">${sn.pinned ? '取消钉住' : '📌 钉住保护'}</button>
-            <button type="button" class="sbtn small" data-rollback="${esc(sn.id)}">⏪ 回滚至此版</button>
-          </div>
-        </div>`).join('');
+          ${skillIds.length > 0 ? `
+          <div class="snap-skill-row">
+            <span class="dim" style="font-size:11.5px;">单卡精准回滚：</span>
+            <select class="snap-skill-sel" data-rb-skill-sel="${esc(sn.id)}">${skillIds.map((id) => `<option value="${esc(id)}">${esc(id)}</option>`).join('')}</select>
+            <button type="button" class="sbtn ghost small" data-rollback-skill="${esc(sn.id)}">↩ 仅回滚此卡</button>
+          </div>` : ''}
+        </div>`;
+      }).join('');
 
       box.querySelectorAll('[data-pin-snap]').forEach((btn) => {
         btn.addEventListener('click', async () => {
@@ -119,7 +150,22 @@ window.RosettaModals = (function () {
             onDashboardUpdated(res.dashboard);
             document.getElementById('dlgSnapshots').close();
             onAfterRollback();
-            showToast(`已无损回滚至快照 ${id}！`);
+            showToast(`已整库无损回滚至快照 ${id}！`);
+          } catch (err) { showToast(err.message, true); }
+        });
+      });
+
+      box.querySelectorAll('[data-rollback-skill]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const id = btn.getAttribute('data-rollback-skill');
+          const sel = box.querySelector(`[data-rb-skill-sel="${id}"]`);
+          const skillId = sel ? sel.value : '';
+          if (!skillId) return;
+          try {
+            const res = await rpc('rollbackSkillSnapshot', { snapshotId: id, skillId });
+            onDashboardUpdated(res.dashboard, true);
+            document.getElementById('dlgSnapshots').close();
+            showToast(`已将单卡 ${skillId} 无损回滚至快照 ${id}（其余技能与开关不变）！`);
           } catch (err) { showToast(err.message, true); }
         });
       });
@@ -201,6 +247,7 @@ window.RosettaModals = (function () {
                   <code class="mono dim">(${esc(p.skillPayload.id)})</code>
                   ${p.stale ? '<span class="rc-badge" style="color:var(--warn);border-color:var(--warn);">⚠️ 基线已变动(Stale)</span>' : ''}
                   ${p.security && p.security.hasExecutableScripts ? '<span class="rc-badge" style="color:var(--danger);border-color:var(--danger);">⚙️ 含脚本</span>' : ''}
+                  ${p.fileChanges && p.fileChanges.removed && p.fileChanges.removed.length ? `<span class="rc-badge" style="color:var(--danger);border-color:var(--danger);">🗑️ 将删 ${p.fileChanges.removed.length} 文件</span>` : ''}
                 </div>
                 <div class="dim" style="font-size:12.5px;margin-top:2px;">理由：${esc(p.rationale)} · 启发式检查：${esc(p.security.verdict)} (${p.security.score}分)</div>
               </div>
@@ -209,6 +256,7 @@ window.RosettaModals = (function () {
                 <button type="button" class="sbtn primary small" data-prop-dec="approve" data-prop-id="${esc(p.proposalId)}">审阅无误·批准</button>
               </div>
             </div>
+            ${renderFileChangesSummaryHtml(p.fileChanges, p.brokenRefs)}
             <div class="diff-box">${formatDiffHtml(p.diffText)}</div>
           </div>`).join('');
         box.querySelectorAll('[data-prop-id]').forEach((btn) => {

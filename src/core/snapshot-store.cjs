@@ -81,6 +81,64 @@ function copyTreeWithHashes(srcDir, dstDir) {
   return hashes;
 }
 
+function verifyAndReadSnapshotFiles(payloadDir, expectedEntries, walkRootDir, walkPrefix = '') {
+  const expectedMap = new Map(expectedEntries);
+  const verifiedBuffers = new Map();
+
+  for (const [relPath, expectedHash] of expectedMap.entries()) {
+    const target = resolveSafeChildPath(payloadDir, ...relPath.split('/'));
+    if (!fs.existsSync(target)) {
+      throw new Error(`Snapshot integrity failure: missing ${relPath}`);
+    }
+    const lst = fs.lstatSync(target);
+    if (!lst.isFile() || lst.isSymbolicLink()) {
+      throw new Error(`Snapshot integrity failure: non-regular file ${relPath}`);
+    }
+    const buf = fs.readFileSync(target);
+    const actualHash = sha256Buffer(buf);
+    if (actualHash !== expectedHash) {
+      throw new Error(`Snapshot integrity failure: hash mismatch on ${relPath}`);
+    }
+    verifiedBuffers.set(relPath, buf);
+  }
+
+  if (fs.existsSync(walkRootDir)) {
+    function scanDisk(curDir, relBase) {
+      for (const entry of fs.readdirSync(curDir, { withFileTypes: true })) {
+        if (entry.name.startsWith('.rosetta-tmp-')) continue;
+        const full = path.join(curDir, entry.name);
+        const rel = relBase ? `${relBase}/${entry.name}` : entry.name;
+        const lst = fs.lstatSync(full);
+        if (lst.isSymbolicLink()) {
+          throw new Error(`Snapshot integrity failure: unexpected symlink ${rel}`);
+        }
+        if (lst.isDirectory()) {
+          scanDisk(full, rel);
+        } else if (lst.isFile()) {
+          if (!expectedMap.has(rel)) {
+            throw new Error(`Snapshot integrity failure: unexpected unlisted file ${rel}`);
+          }
+        }
+      }
+    }
+    scanDisk(walkRootDir, walkPrefix);
+  }
+
+  return verifiedBuffers;
+}
+
+function materializeVerifiedFiles(targetDir, verifiedBuffers, stripPrefix = '') {
+  fs.mkdirSync(targetDir, { recursive: true });
+  for (const [relPath, buf] of verifiedBuffers.entries()) {
+    if (stripPrefix && !relPath.startsWith(stripPrefix)) continue;
+    const subRel = stripPrefix ? relPath.slice(stripPrefix.length) : relPath;
+    if (!subRel) continue;
+    const dst = resolveSafeChildPath(targetDir, ...subRel.split('/'));
+    fs.mkdirSync(path.dirname(dst), { recursive: true });
+    fs.writeFileSync(dst, buf);
+  }
+}
+
 class SnapshotStore {
   constructor(rosettaRoot, maxUnpinnedSnapshots = 35) {
     this.rosettaRoot = path.resolve(rosettaRoot);
@@ -187,6 +245,11 @@ class SnapshotStore {
       if (fs.existsSync(mf)) {
         try {
           const data = JSON.parse(fs.readFileSync(mf, 'utf8'));
+          const skillIdSet = new Set();
+          for (const rel of Object.keys(data.hashes || {})) {
+            const m = rel.match(/^skills\/([^/]+)\//);
+            if (m) skillIdSet.add(m[1]);
+          }
           list.push({
             id: data.id,
             createdAt: data.createdAt,
@@ -194,7 +257,8 @@ class SnapshotStore {
             reason: data.reason,
             pinned: Boolean(data.pinned),
             coalesceKey: data.coalesceKey || null,
-            fileCount: data.fileCount
+            fileCount: data.fileCount,
+            skillIds: [...skillIdSet].sort()
           });
         } catch (_corruptMf) { /* skip unreadable snapshot manifest */ }
       }
@@ -216,42 +280,19 @@ class SnapshotStore {
 
       const manifest = JSON.parse(fs.readFileSync(mfPath, 'utf8'));
 
-      for (const [relPath, expectedHash] of Object.entries(manifest.hashes || {})) {
-        const target = resolveSafeChildPath(payloadDir, ...relPath.split('/'));
-        if (!fs.existsSync(target)) {
-          throw new Error(`Snapshot integrity failure: missing ${relPath}`);
-        }
-        const actualHash = sha256Buffer(fs.readFileSync(target));
-        if (actualHash !== expectedHash) {
-          throw new Error(`Snapshot integrity failure: hash mismatch on ${relPath}`);
-        }
-      }
+      const verifiedBuffers = verifyAndReadSnapshotFiles(payloadDir, Object.entries(manifest.hashes || {}), payloadDir, '');
 
       const topBuffers = {};
       for (const topFile of TOP_CONFIG_FILES) {
-        const src = path.join(payloadDir, topFile);
-        if (fs.existsSync(src)) {
-          topBuffers[topFile] = fs.readFileSync(src);
+        if (verifiedBuffers.has(topFile)) {
+          topBuffers[topFile] = verifiedBuffers.get(topFile);
         }
       }
 
-      const snapSkills = path.join(payloadDir, 'skills');
-      const stageSkills = path.join(this.catalogDir, `.skills-stage-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`);
-      if (fs.existsSync(snapSkills)) {
-        copyTreeWithHashes(snapSkills, stageSkills);
-      } else {
-        fs.mkdirSync(stageSkills, { recursive: true });
-      }
+      const preSnap = this.createSnapshot(`回滚至 ${snapshotId}`, safeActor, { skipPrune: true });
 
-      let preSnap;
-      try {
-        preSnap = this.createSnapshot(`回滚至 ${snapshotId}`, safeActor, { skipPrune: true });
-      } catch (snapErr) {
-        if (fs.existsSync(stageSkills)) {
-          try { fs.rmSync(stageSkills, { recursive: true, force: true }); } catch (_c) { /* ignore */ }
-        }
-        throw snapErr;
-      }
+      const stageSkills = path.join(this.catalogDir, `.rosetta-tmp-skills-stage-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`);
+      materializeVerifiedFiles(stageSkills, verifiedBuffers, 'skills/');
 
       const prevTopState = {};
       for (const topFile of TOP_CONFIG_FILES) {
@@ -260,7 +301,7 @@ class SnapshotStore {
       }
 
       const liveSkills = path.join(this.catalogDir, 'skills');
-      const oldBackup = path.join(this.catalogDir, `.skills-old-${Date.now()}-${crypto.randomBytes(2).toString('hex')}`);
+      const oldBackup = path.join(this.catalogDir, `.rosetta-tmp-skills-old-${Date.now()}-${crypto.randomBytes(2).toString('hex')}`);
       let swappedSkills = false;
       const writtenTopFiles = [];
 
@@ -309,6 +350,80 @@ class SnapshotStore {
       return {
         restoredSnapshotId: snapshotId,
         safetySnapshotId: preSnap.id,
+        restoredAt: new Date().toISOString()
+      };
+    });
+  }
+
+  rollbackSkill(snapshotId, skillId, actor = 'User') {
+    return withCatalogLock(this.rosettaRoot, () => {
+      validateSlug(snapshotId, 'snapshotId');
+      validateSlug(skillId, 'skillId');
+      const safeActor = validateActor(actor);
+      const snapDir = resolveSafeChildPath(this.snapshotsDir, snapshotId);
+      const mfPath = path.join(snapDir, 'manifest.json');
+      const payloadDir = path.join(snapDir, 'catalog');
+
+      if (!fs.existsSync(mfPath) || !fs.existsSync(payloadDir)) {
+        throw new Error(`Snapshot not found: ${snapshotId}`);
+      }
+
+      const manifest = JSON.parse(fs.readFileSync(mfPath, 'utf8'));
+      const prefix = `skills/${skillId}/`;
+      const skillEntries = Object.entries(manifest.hashes || {}).filter(([relPath]) => relPath.startsWith(prefix));
+      const snapSkillDir = resolveSafeChildPath(path.join(payloadDir, 'skills'), skillId);
+
+      if (skillEntries.length === 0 || !fs.existsSync(snapSkillDir)) {
+        throw new Error(`Snapshot ${snapshotId} does not contain skill "${skillId}".`);
+      }
+
+      const verifiedBuffers = verifyAndReadSnapshotFiles(payloadDir, skillEntries, snapSkillDir, `skills/${skillId}`);
+
+      const preSnap = this.createSnapshot(`单卡回滚 ${skillId} 至 ${snapshotId}`, safeActor, { skipPrune: true });
+
+      const liveSkillsRoot = path.join(this.catalogDir, 'skills');
+      fs.mkdirSync(liveSkillsRoot, { recursive: true });
+      const stageDir = path.join(liveSkillsRoot, `.rosetta-tmp-skill-stage-${skillId}-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`);
+      try {
+        materializeVerifiedFiles(stageDir, verifiedBuffers, prefix);
+      } catch (matErr) {
+        if (fs.existsSync(stageDir)) {
+          try { fs.rmSync(stageDir, { recursive: true, force: true }); } catch (_c) { /* ignore */ }
+        }
+        throw matErr;
+      }
+
+      const liveSkillDir = resolveSafeChildPath(liveSkillsRoot, skillId);
+      const oldBackup = path.join(liveSkillsRoot, `.rosetta-tmp-skill-old-${skillId}-${Date.now()}-${crypto.randomBytes(2).toString('hex')}`);
+      let movedOld = false;
+      try {
+        if (fs.existsSync(liveSkillDir)) {
+          fs.renameSync(liveSkillDir, oldBackup);
+          movedOld = true;
+        }
+        fs.renameSync(stageDir, liveSkillDir);
+      } catch (err) {
+        if (movedOld && fs.existsSync(oldBackup) && !fs.existsSync(liveSkillDir)) {
+          try { fs.renameSync(oldBackup, liveSkillDir); } catch (_revertErr) { /* best effort */ }
+        }
+        if (fs.existsSync(stageDir)) {
+          try { fs.rmSync(stageDir, { recursive: true, force: true }); } catch (_cleanErr) { /* best effort */ }
+        }
+        throw err;
+      }
+
+      if (fs.existsSync(oldBackup)) {
+        try { fs.rmSync(oldBackup, { recursive: true, force: true }); } catch (_rmOldErr) { /* best effort */ }
+      }
+
+      this._pruneOldSnapshots(new Set([snapshotId, preSnap.id]));
+
+      return {
+        rolledBackTo: snapshotId,
+        restoredSnapshotId: snapshotId,
+        skillId,
+        safetySnapshotId: preSnap.id,
+        fileCount: skillEntries.length,
         restoredAt: new Date().toISOString()
       };
     });
