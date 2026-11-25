@@ -146,7 +146,7 @@ const TOOLS = [
   },
   {
     name: 'rosetta_propose',
-    description: '向 Rosetta 待审变更队列提交新技能或修订草稿（支持 SKILL.md、references 与 scripts 多文件 Diff，记入带哈希链的追加审计日志，不直接修改正式库）。',
+    description: '向 Rosetta 待审变更队列提交新技能或修订草稿（支持 SKILL.md、references 与 scripts 默认增量合并及显式删除列表，自动生成文件级差异与断链预检，记入带哈希链的追加审计日志，不直接修改正式库）。',
     annotations: { readOnlyHint: false },
     inputSchema: {
       type: 'object',
@@ -156,8 +156,10 @@ const TOOLS = [
         title: { type: 'string' },
         summary: { type: 'string' },
         body: { type: 'string' },
-        references: { type: 'object', description: '可选：references/ 文件名到 Markdown 文本映射' },
-        scripts: { type: 'object', description: '可选：scripts/ 文件名到源码映射' },
+        references: { type: 'object', description: '可选：references/ 增量新增或更新的文件名到文本映射（未提及的既有文件默认保留）' },
+        removeReferences: { type: 'array', items: { type: 'string' }, description: '可选：需显式删除的 references/ 文件名列表' },
+        scripts: { type: 'object', description: '可选：scripts/ 增量新增或更新的文件名到源码映射（未提及的既有文件默认保留）' },
+        removeScripts: { type: 'array', items: { type: 'string' }, description: '可选：需显式删除的 scripts/ 文件名列表' },
         lintExemptions: {
           type: 'object',
           description: '可选：个人专用卡的按规则质检豁免（仅开放 ERR_PRIVATE_NAME_LEAK / ERR_INFORMAL_SLANG / WARN_THIN_SKILL）',
@@ -184,7 +186,8 @@ const TOOLS = [
         title: { type: 'string' },
         summary: { type: 'string' },
         body: { type: 'string' },
-        references: { type: 'object', description: '可选：references/ 文件名到 Markdown 文本映射' },
+        references: { type: 'object', description: '可选：references/ 增量新增或更新的文件名到文本映射（未提及的既有文件默认保留）' },
+        removeReferences: { type: 'array', items: { type: 'string' }, description: '可选：需显式删除的 references/ 文件名列表' },
         origin: { type: 'string', enum: ['official', 'github-verified', 'bespoke'] },
         sourceUrl: { type: 'string' },
         approvalToken: { type: 'string', description: '用户在 Rosetta 桌面端签发的 5 分钟单次授权码 (如 RSTA-XXXX-XXXX)' },

@@ -1,0 +1,11 @@
+# Dependencies & OS junk
+node_modules/
+Thumbs.db
+.DS_Store
+
+# Local runtime state, audit log, snapshots, and machine-specific overrides (never commit personal history/paths)
+snapshots/
+runtime/
+logs/
+*.local.json
+catalog/audit-log.jsonl

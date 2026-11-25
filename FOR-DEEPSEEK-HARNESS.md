@@ -1,13 +1,13 @@
 # Rosetta for DeepSeek Harness — Agent 接入与使用手册
 
-> **给用户的提示**：你不需要自己折腾下面的 YAML 和命令行——直接把这份文档连同 `Rosetta-DSH` 文件夹路径发给你的 **DeepSeek Harness（大肥鱼）**，对它说：  
+> **给用户的提示**：你不需要自己折腾下面的 YAML 和命令行——直接把这份文档连同 `Rosetta` 文件夹路径发给你的 **DeepSeek Harness**，对它说：  
 > **“请阅读这份手册，帮我把 Rosetta 接入到当前的 DeepSeek Harness，并完成自检验收。”**
 
 ---
 
 ## 一、给 DeepSeek Harness（`dsh`）的定位说明
 
-你正在协助用户安装、接入并日常使用本地技能与偏好仓管系统 **Rosetta for DeepSeek Harness（v1.0.0，All Rights Reserved）**。动手前请先明确三条协作铁律：
+你正在协助用户安装、接入并日常使用本地技能与偏好仓管系统 **Rosetta（v1.0.1，All Rights Reserved）**。动手前请先明确三条协作铁律：
 
 1. **只作能力叠加，绝不替代原生能力**：Rosetta 不替代 DeepSeek Harness 原生的 Cordis 插件、终端工具或工作区能力，只在原生能力之上提供经过验证的专业规范卡、可执行校验脚本与个人偏好记忆。
 2. **用户当下指令优先，事后回修卡片**：当某张技能卡的旧规则与用户当下的明确要求冲突时，一律以用户当下的指令为准（若涉及数据安全或可维护性等硬风险，先简短提示利弊，仍由用户拍板）；事后再通过提案把卡片改准。
@@ -140,8 +140,8 @@ node "<ROSETTA_ROOT>/bin/rosetta.cjs" status
 | `mcp__rosetta__rosetta_verify_literature` | 只读 | 联网调用 Crossref（`mode: "doi"`）与 OpenAlex（`mode: "search"`）实时核验论文真伪，严禁凭记忆编造文献或 DOI |
 | `mcp__rosetta__rosetta_security_scan` | 只读 | 引入外部 `SKILL.md` 或脚本前运行静态启发式扫描（检测指令覆盖、零宽字符、凭据窃取与外连） |
 | `mcp__rosetta__rosetta_feedback` | 本地流 | **无感反馈收件箱**：`record` 静默记录用户随口点评，`list` 查询未归档条目，`resolve` 在提案通过后销账 |
-| `mcp__rosetta__rosetta_propose` | 提案写入 | 向桌面端「待审变更」队列提交新增或修订草稿（自动生成多文件 Diff），不直接改正式库 |
-| `mcp__rosetta__rosetta_apply_authorized` | 授权写入 | 仅当用户主动给出 Rosetta 桌面端签发的 5 分钟单次授权码 `RSTA-XXXX-XXXX` 时，用于合入无脚本修订 |
+| `mcp__rosetta__rosetta_propose` | 提案写入 | 向桌面端「待审变更」队列提交新增或修订草稿（`references/` 与 `scripts/` 默认增量合并，显式删除须传 `removeReferences` / `removeScripts`；自动生成文件级变更清单、断链预检与多文件 Diff），不直接改正式库 |
+| `mcp__rosetta__rosetta_apply_authorized` | 授权写入 | 仅当用户主动给出 Rosetta 桌面端签发的 5 分钟单次授权码 `RSTA-XXXX-XXXX` 时，用于合入无脚本且无文件删除的纯文档修订（含脚本或显式删除一律强制转桌面 Diff 审批） |
 | `mcp__rosetta__rosetta_snapshots` | 只读 | 查看历史原子快照与钉住保护的里程碑版本 |
 | `mcp__rosetta__rosetta_vault_search` | 只读 | 检索本机登记的项目交付件索引与章节锚点 |
 | `mcp__rosetta__rosetta_vault_read` | 只读 | 按交付件 ID 核验 SHA-256 新鲜度（`CURRENT`/`STALE`/`MISSING`）并按 `anchor` 切片读取原件片段 |

@@ -10,7 +10,8 @@ const {
 const { scanSkillBundle, scanDirectory, isExecutableFileName } = require('./security-scanner.cjs');
 const { atomicWriteFile, SnapshotStore } = require('./snapshot-store.cjs');
 const { DESKTOP_SESSION_SYMBOL, withCatalogLock, resolveAuditOrigin, AuditLogger, ApprovalGrantStore } = require('./lock-and-audit.cjs');
-const { readAllExtraFilesFromDir, buildMergedExtraFiles, writeManagedSubdir, computeBundleDiff } = require('./skill-bundle-io.cjs');
+const { readAllExtraFilesFromDir, buildMergedExtraFiles, writeManagedSubdir, computeBundleDiff, computeFileChanges, detectDestructiveShrink, hydrateProposalPreview } = require('./skill-bundle-io.cjs');
+const { findBrokenSubfileRefs } = require('./catalog-linter.cjs');
 const { ExternalSkillsService } = require('./external-skills-service.cjs');
 const { computeFileHashMap, BaselineStore } = require('./baseline-store.cjs');
 
@@ -602,6 +603,12 @@ class CatalogService {
       const scanResult = scanSkillBundle({ markdown: previewMd, extraFiles: nextExtra });
       const baseHash = existing ? this.computeLiveSkillHash(meta.id) : null;
       const diffText = computeBundleDiff(existing ? existing.body : '', nextBody, oldExtra, nextExtra);
+      const fileChanges = computeFileChanges(existing ? existing.body : '', nextBody, oldExtra, nextExtra, {
+        isUpdate: Boolean(existing),
+        removeReferences: payload.removeReferences,
+        removeScripts: payload.removeScripts
+      });
+      const brokenRefs = findBrokenSubfileRefs(previewMd, nextExtra);
 
       const cleanSkillPayload = Object.assign({}, payload, {
         id: meta.id,
@@ -625,6 +632,8 @@ class CatalogService {
         isUpdate: Boolean(existing),
         baseHash,
         diffText,
+        fileChanges,
+        brokenRefs,
         security: scanResult,
         skillPayload: cleanSkillPayload
       };
@@ -649,22 +658,48 @@ class CatalogService {
         (payload.scripts && Object.keys(payload.scripts).length > 0) ||
         (payload.extraFiles && Object.keys(payload.extraFiles).some(isExecutableFileName))
       );
+      const hasFileDeletions = Boolean(
+        (Array.isArray(payload.removeReferences) && payload.removeReferences.length > 0) ||
+        (Array.isArray(payload.removeScripts) && payload.removeScripts.length > 0)
+      );
 
-      if (hasNewScripts) {
+      let existingForShrink = null;
+      try { existingForShrink = this.getSkill(payload.id, { includeBody: true }); } catch (_nf) { existingForShrink = null; }
+      const skillDirForShrink = resolveSafeChildPath(this.skillsDir, payload.id);
+      const { extraFiles: previewExtraForShrink } = buildMergedExtraFiles(
+        skillDirForShrink,
+        payload,
+        existingForShrink ? (existingForShrink.extraFiles || {}) : {},
+        { strict: true }
+      );
+      const shrunkFiles = detectDestructiveShrink(existingForShrink, payload.body, previewExtraForShrink);
+      const hasDestructiveShrink = shrunkFiles.length > 0;
+
+      if (hasNewScripts || hasFileDeletions || hasDestructiveShrink) {
         const prop = this.createProposal(payload, hostAgent, 'mcp');
         this.audit.log({
           actor: hostAgent,
           channel: 'mcp',
-          action: 'mcp.apply_queued_scripts',
+          action: hasNewScripts
+            ? 'mcp.apply_queued_scripts'
+            : (hasFileDeletions ? 'mcp.apply_queued_deletions' : 'mcp.apply_queued_shrink'),
           targetId: payload.id,
           status: 'QUEUED',
           approval: 'requires-desktop-diff',
-          summary: `含可执行脚本，强制转入桌面 Diff 审批 (${prop.proposalId})`
+          summary: hasNewScripts
+            ? `含可执行脚本，强制转入桌面 Diff 审批 (${prop.proposalId})`
+            : (hasFileDeletions
+              ? `含显式子文件删除，强制转入桌面 Diff 审批 (${prop.proposalId})`
+              : `检测到文件清空或缩减至 10% 以下 (${shrunkFiles.join(', ')})，按删除处理转入桌面 Diff 审批 (${prop.proposalId})`)
         });
         return {
           applied: false,
           status: 'AWAITING_DESKTOP_DIFF_APPROVAL',
-          reason: '包含可执行脚本的技能变更必须在 Rosetta 桌面端审阅源码 Diff 后批准。',
+          reason: hasNewScripts
+            ? '包含可执行脚本的技能变更必须在 Rosetta 桌面端审阅源码 Diff 后批准。'
+            : (hasFileDeletions
+              ? '包含显式子文件删除（removeReferences/removeScripts）的变更必须在 Rosetta 桌面端核对红色删除清单后批准。'
+              : `检测到文件内容被清空或缩减至原体积 10% 以下（${shrunkFiles.join(', ')}），按删除操作转入 Rosetta 桌面端 Diff 审批。`),
           proposalId: prop.proposalId
         };
       }
@@ -725,6 +760,11 @@ class CatalogService {
           p.stale = Boolean(p.isUpdate && p.baseHash && liveHash && p.baseHash !== liveHash);
           if (!p.diffText && p.skillPayload && p.skillPayload.body) {
             p.diffText = computeBundleDiff('', p.skillPayload.body);
+          }
+          if ((!p.fileChanges || !Array.isArray(p.brokenRefs)) && p.skillPayload && p.skillPayload.id) {
+            let liveSkill = null;
+            try { liveSkill = this.getSkill(p.skillPayload.id, { includeBody: true }); } catch (_nf) { liveSkill = null; }
+            hydrateProposalPreview(p, liveSkill, resolveSafeChildPath(this.skillsDir, p.skillPayload.id), findBrokenSubfileRefs);
           }
           out.push(p);
         }

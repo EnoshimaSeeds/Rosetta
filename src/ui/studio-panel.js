@@ -126,6 +126,9 @@ window.RosettaStudio = (function () {
         while (Object.prototype.hasOwnProperty.call(s.scriptFiles, `helper_${n}.cjs`)) n++;
         const newName = `helper_${n}.cjs`;
         s.scriptFiles[newName] = "'use strict';\n// 在此编写零依赖辅助脚本\n";
+        if (Array.isArray(s.removedScripts)) {
+          s.removedScripts = s.removedScripts.filter((x) => x !== newName);
+        }
         st.activeScriptName = newName;
         renderScriptPane();
       });
@@ -134,6 +137,10 @@ window.RosettaStudio = (function () {
       if (delBtn) {
         delBtn.addEventListener('click', () => {
           if (!st.activeScriptName) return;
+          s.removedScripts = Array.isArray(s.removedScripts) ? s.removedScripts : [];
+          if (!s.removedScripts.includes(st.activeScriptName)) {
+            s.removedScripts.push(st.activeScriptName);
+          }
           delete s.scriptFiles[st.activeScriptName];
           st.activeScriptName = Object.keys(s.scriptFiles)[0] || null;
           renderScriptPane();
@@ -384,6 +391,7 @@ window.RosettaStudio = (function () {
             flavor: s.flavor,
             body: s.body,
             scripts: s.scriptFiles,
+            removeScripts: Array.isArray(s.removedScripts) && s.removedScripts.length ? s.removedScripts : undefined,
             references: s.referenceFiles,
             assigned: s.assigned
           },
